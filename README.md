@@ -2,8 +2,9 @@
 
 Angular 21 frontend assessment using GraphQL, custom RxJS stores and Angular Signals.
 
-**Current status:** project foundation only. Pokemon browsing, details and team
-management have not been implemented yet. Track verified requirements in
+**Current status:** foundation, GraphQL services, RxJS stores and form validators
+are implemented and tested. The browsing/detail/team interfaces are next; the
+app still displays its foundation screen. Track verified requirements in
 [the assessment checklist](docs/assessment-checklist.md) and build stages in
 [the implementation plan](docs/implementation-plan.md).
 
@@ -48,20 +49,32 @@ npm run build
 ```
 
 `npm run check` runs all four commands. `npm run format` formats source and
-configuration files. Foundation smoke tests do not replace the assessment's
-required store, selector and validator tests; those will be added with the features.
+configuration files. Tests cover GraphQL errors/retry/timeout/cancellation,
+catalog caching, selectors, optimistic rollback/concurrency and form validators.
 
 ## Architecture
 
-Feature folders will contain `pokedex` and `teams` models, API services,
+Feature folders contain `pokedex` and `teams` models, API services,
 components and BehaviorSubject stores. Shared UI/utilities live in `common`;
-GraphQL transport lives in `core`. Observable selectors feed templates through
-`toSignal()`. Signals hold UI state, `computed()` derives summaries, and
-`effect()` persists the selected team. Components are standalone and OnPush,
+GraphQL transport lives in `core`. BehaviorSubject stores own domain state.
+Selectors compose filtering, stat sorting and clamped client pagination.
+The complete catalog is loaded in ordered batches of 100 before global table
+filtering/sorting; team members and details can load independently into the cache.
+Autocomplete debounces for 300ms and cancels stale requests with `switchMap`.
+
+Read streams share in-flight work with reference counting. Creating/deleting a
+team updates the list optimistically; failures roll back only the affected item.
+A started mutation finishes even if its initiating component leaves, bounded by
+the transport timeout. This prevents component teardown from leaving provisional
+teams in the store. Mutations are not automatically retried.
+
+Next, observable selectors will feed templates through `toSignal()`, Signals will
+hold UI state, `computed()` will derive summaries, and `effect()` will persist
+the selected team. Components are standalone and OnPush,
 with separate HTML/SCSS and signal-based inputs/outputs.
 
 No AWS Amplify or authentication is used. Chart.js is installed for the detail
-radar chart. The application data layer is still pending.
+radar chart. Radar rendering and component communication are pending.
 
 ## Commits
 
@@ -73,6 +86,8 @@ feat(pokedex): add sortable stats table
 fix(teams): roll back failed optimistic creation
 ```
 
+The repository owner is **AffanRM**. The developer runs all commit and push
+commands manually; the coding agent prepares tested changes and supplies commands.
 Keep changes focused and commit each verified build stage. Assessment PDFs,
 temporary files and local credentials are excluded from Git.
 
@@ -80,4 +95,6 @@ temporary files and local credentials are excluded from Git.
 
 After completing required behavior: durable team storage instead of the
 ephemeral mock, generated GraphQL types from pinned schemas, and broader
-automated browser coverage for network failures and accessibility.
+automated browser coverage for network failures and accessibility. A production
+backend should support idempotency keys: the mock cannot guarantee whether a
+mutation was applied if its response is lost or times out.

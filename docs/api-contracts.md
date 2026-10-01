@@ -12,6 +12,11 @@ should accept a serialized JSON string as well and tolerate missing sprites.
 Order by ID explicitly when requesting pages. Network failures and GraphQL
 `errors` must propagate to UI error state rather than becoming an empty success.
 
+The actual application query documents have also been exercised against the
+live endpoint: list (one record), ID batch (two records), English abilities
+(two records) and autocomplete (one result). Units are converted from decimeters
+to meters and hectograms to kilograms in the domain mapper.
+
 ## Local mock
 
 Endpoint: `http://localhost:4000/`.
@@ -52,8 +57,10 @@ mutation RemoveTeam($id: ID!) {
 The query returned all three supplied teams. `id` and `trainer_id` serialize
 as strings even though the fixture uses numbers. `pokemon_ids` remains an
 array of integers. Creation's required arguments and removal's ID argument
-were verified through schema introspection; the mutation flow still needs
-implementation and end-to-end verification.
+were verified through schema introspection. A create/remove round trip also
+succeeded against the running mock, and its temporary verification team was
+removed. Store mutations and rollback are covered by unit tests; end-to-end
+browser UI verification remains pending.
 
 The server also exposes `deleteTeam`. Use `removeTeam` consistently. Its
 in-memory database resets when the process restarts.

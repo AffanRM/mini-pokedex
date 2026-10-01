@@ -4,6 +4,10 @@ Build in small, reviewable stages. Each stage ends with appropriate checks and
 a scoped Conventional Commit. Do not mark a checklist item complete without
 evidence. No score is guaranteed; this plan targets every stated requirement.
 
+GitHub owner: AffanRM; intended repository: mini-pokedex. The user runs all
+commit/push commands manually. Prepare changes and provide commands at each
+verified checkpoint; do not commit or push on the user's behalf.
+
 1. **Foundation:** inspect the brief, validate tools, scaffold Angular 21,
    install dependencies, enforce style/commits, verify baseline, publish repo.
 2. **Data layer:** typed GraphQL transport, bounded retry, mock schema validation,
