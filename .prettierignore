@@ -1,0 +1,8 @@
+node_modules/
+dist/
+coverage/
+.angular/
+tmp/
+package-lock.json
+*.pdf
+.husky/_/

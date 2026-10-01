@@ -1,0 +1,28 @@
+:root {
+  --color-primary: #b4232c;
+  --color-text: #20262f;
+  --color-surface: #f6f5f1;
+  --color-surface-2: #ffffff;
+  --color-border: #d8dce2;
+  --color-danger: #b4232c;
+  --color-success: #167147;
+  --panel-width: 440px;
+  --font-family: 'Segoe UI', system-ui, sans-serif;
+  --space-page: 2rem;
+}
+
+body {
+  margin: 0;
+  color: var(--color-text);
+  background: var(--color-surface);
+  font-family: var(--font-family);
+}
+
+* {
+  box-sizing: border-box;
+}
+button,
+input,
+select {
+  font: inherit;
+}
