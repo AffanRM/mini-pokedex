@@ -1,0 +1,66 @@
+.pokedex-page {
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: 2.5rem var(--space-page) 2rem;
+  &__intro {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    .eyebrow {
+      margin: 0 0 0.75rem;
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(1.8rem, 3vw, 2.7rem);
+      font-weight: 650;
+      letter-spacing: -0.045em;
+    }
+  }
+  &__description {
+    margin: 0.8rem 0 0;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: var(--color-muted);
+  }
+  &__catalog-note {
+    display: flex;
+    gap: 0.45rem;
+    align-items: center;
+    flex-shrink: 0;
+    margin-bottom: 0.25rem;
+    font-size: 0.72rem;
+    color: var(--color-muted);
+  }
+  &__status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-success);
+    &--loading {
+      background: var(--color-warning);
+    }
+    &--error {
+      background: var(--color-danger);
+    }
+  }
+  &__footnote {
+    margin: 1.2rem 0 0;
+    color: var(--color-muted);
+    font-size: 0.72rem;
+    line-height: 1.6;
+    text-align: center;
+  }
+}
+@media (max-width: 800px) {
+  .pokedex-page__intro {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+@media (max-width: 640px) {
+  .pokedex-page {
+    padding-top: 1.75rem;
+  }
+}

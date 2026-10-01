@@ -1,3 +1,59 @@
 .app-shell {
-  padding: var(--space-page);
+  &__header {
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-surface-2);
+  }
+  &__header-inner {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    max-width: var(--content-width);
+    height: 76px;
+    margin: 0 auto;
+    padding-inline: var(--space-page);
+  }
+  &__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    color: var(--color-text);
+    text-decoration: none;
+    font-size: 1.15rem;
+    letter-spacing: -0.035em;
+    strong {
+      font-weight: 750;
+    }
+  }
+  &__nav-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 76px;
+    color: var(--color-primary);
+    border-bottom: 2px solid var(--color-primary);
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 650;
+  }
+  &__edition {
+    display: flex;
+    gap: 0.65rem;
+    align-items: center;
+    margin-left: auto;
+    color: var(--color-muted);
+    font: 0.6rem var(--font-mono);
+    letter-spacing: 0.08em;
+    span {
+      padding: 0.35rem;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+    }
+  }
+}
+@media (max-width: 640px) {
+  .app-shell__header-inner {
+    gap: 1.5rem;
+  }
+  .app-shell__edition {
+    display: none;
+  }
 }

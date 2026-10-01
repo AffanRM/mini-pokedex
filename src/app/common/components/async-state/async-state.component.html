@@ -1,0 +1,15 @@
+<div class="async-state" [attr.role]="status() === 'error' ? 'alert' : 'status'">
+  @if (status() === 'loading' || status() === 'idle') {
+    <span class="async-state__spinner" aria-hidden="true"></span>
+  } @else {
+    <img src="assets/icons/ic_pokeball.svg" width="40" height="40" alt="" aria-hidden="true" />
+  }
+  <h3 class="async-state__title">{{ title() }}</h3>
+  <p class="async-state__message">{{ message() }}</p>
+  @if (status() === 'error') {
+    <button class="button button--secondary" type="button" (click)="retry.emit()">
+      <img src="assets/icons/ic_refresh.svg" width="16" height="16" alt="" aria-hidden="true" />
+      {{ retryLabel() }}
+    </button>
+  }
+</div>

@@ -1,0 +1,39 @@
+.async-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  min-height: 250px;
+  padding: 2rem;
+  text-align: center;
+
+  &__title {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+  &__message {
+    max-width: 32ch;
+    margin: 0 0 0.5rem;
+    color: var(--color-muted);
+    line-height: 1.65;
+  }
+  &__spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid var(--color-border);
+    border-top-color: var(--color-primary);
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .async-state__spinner {
+    animation: none;
+  }
+}

@@ -1,0 +1,14 @@
+<figure class="stat-radar" [class.stat-radar--busy]="busy()" [attr.aria-busy]="busy()">
+  <div class="stat-radar__canvas">
+    <canvas
+      #canvas
+      role="img"
+      [attr.aria-label]="
+        busy() ? 'Loading base stats' : (pokemon()?.name ?? 'Pokémon') + ' base stats radar chart'
+      "
+    >
+      The six base stats are also listed below the chart.
+    </canvas>
+  </div>
+  <figcaption class="stat-radar__caption">Six base stats · scale 0–255</figcaption>
+</figure>

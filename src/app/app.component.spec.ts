@@ -1,10 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { provideRouter } from '@angular/router';
 
 describe('AppComponent foundation', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent],
+      providers: [provideRouter([])],
     }).compileComponents();
   });
 
@@ -14,10 +16,12 @@ describe('AppComponent foundation', () => {
     expect(app).toBeTruthy();
   });
 
-  it('should render title', async () => {
+  it('should render labeled home navigation', async () => {
     const fixture = TestBed.createComponent(AppComponent);
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Mini Pokédex');
+    expect(compiled.querySelector('a[aria-label="Mini Pokédex home"]')?.textContent).toContain(
+      'Pokédex',
+    );
   });
 });

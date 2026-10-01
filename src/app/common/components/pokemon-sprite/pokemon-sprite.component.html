@@ -1,0 +1,19 @@
+<span class="pokemon-sprite" [style.width.px]="size()" [style.height.px]="size()">
+  @if (url() && !failed()) {
+    <img
+      [src]="url()"
+      [width]="size()"
+      [height]="size()"
+      [alt]="name()"
+      [loading]="priority() ? 'eager' : 'lazy'"
+      (error)="failed.set(true)"
+    />
+  } @else {
+    <img
+      src="assets/icons/ic_pokeball.svg"
+      [width]="size() / 2"
+      [height]="size() / 2"
+      [alt]="name() + ' artwork unavailable'"
+    />
+  }
+</span>

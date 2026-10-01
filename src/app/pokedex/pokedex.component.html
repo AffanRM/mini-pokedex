@@ -1,0 +1,51 @@
+<main class="pokedex-page">
+  <div class="pokedex-page__intro">
+    <div>
+      <p class="eyebrow">THE POKÉMON FIELD GUIDE</p>
+      <h1>Discover your next favorite.</h1>
+      <p class="pokedex-page__description">
+        Explore every Pokémon, compare its strengths, and take a closer look.
+      </p>
+    </div>
+    <div class="pokedex-page__catalog-note">
+      <span
+        class="pokedex-page__status-dot"
+        [class.pokedex-page__status-dot--loading]="isLoading()"
+        [class.pokedex-page__status-dot--error]="state().status === 'error'"
+      ></span>
+      {{
+        isLoading()
+          ? 'Loading the field guide'
+          : state().status === 'error'
+            ? 'Connection interrupted'
+            : 'Ready to explore'
+      }}
+    </div>
+  </div>
+  <app-pokemon-table
+    [page]="page()"
+    [controls]="controls()"
+    [status]="state().status"
+    [error]="state().error"
+    [selectedId]="selectedPokemon()?.id ?? null"
+    (selected)="select($event)"
+    (controlsChanged)="store.updateControls($event)"
+    (retry)="refresh()"
+  />
+  <p class="pokedex-page__footnote">
+    Base stats describe a Pokémon’s natural strengths. Individual training can change its battle
+    stats.
+  </p>
+  @if (panelOpen()) {
+    @if (selectedPokemon(); as pokemon) {
+      <app-pokemon-detail
+        [pokemonId]="pokemon.id"
+        [pokemonName]="pokemon.name"
+        [previousId]="previousId()"
+        [nextId]="nextId()"
+        (closed)="closePanel()"
+        (navigate)="navigate($event)"
+      />
+    }
+  }
+</main>

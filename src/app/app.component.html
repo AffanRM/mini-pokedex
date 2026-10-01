@@ -1,5 +1,13 @@
-<main class="app-shell">
-  <h1>Mini Pokédex</h1>
-  <p>Project foundation is ready. Pokémon browsing and team building are coming next.</p>
-  <router-outlet />
-</main>
+<header class="app-shell__header">
+  <div class="app-shell__header-inner">
+    <a class="app-shell__brand" routerLink="/" aria-label="Mini Pokédex home">
+      <img src="assets/icons/ic_pokeball.svg" width="34" height="34" alt="" aria-hidden="true" />
+      <span>Mini <strong>Pokédex</strong></span>
+    </a>
+    <nav aria-label="Main navigation">
+      <a class="app-shell__nav-link" routerLink="/" aria-current="page">Pokédex</a>
+    </nav>
+    <span class="app-shell__edition">FIELD EDITION <span>01</span></span>
+  </div>
+</header>
+<router-outlet />

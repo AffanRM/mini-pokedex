@@ -1,0 +1,160 @@
+<dialog
+  #dialog
+  id="pokemon-detail"
+  class="pokemon-detail"
+  aria-labelledby="detail-title"
+  (close)="closed.emit()"
+>
+  <header class="pokemon-detail__header">
+    <span class="eyebrow">POKÉMON PROFILE</span>
+    <button
+      type="button"
+      class="icon-button"
+      aria-label="Close Pokémon details"
+      (click)="close()"
+      autofocus
+    >
+      <img src="assets/icons/ic_close.svg" width="20" height="20" alt="" aria-hidden="true" />
+    </button>
+  </header>
+  <div class="pokemon-detail__scroll" [attr.aria-busy]="state().status === 'loading'">
+    <div class="pokemon-detail__identity">
+      <span class="pokemon-detail__number">#{{ pokemonId().toString().padStart(4, '0') }}</span>
+      <h2 id="detail-title">{{ pokemonName() | titlecase }}</h2>
+      @if (state().status === 'success' && state().data; as pokemon) {
+        <div class="pokemon-detail__types">
+          @for (type of pokemon.types; track type) {
+            <app-type-badge [type]="type" />
+          }
+        </div>
+        <div class="pokemon-detail__art">
+          <app-pokemon-sprite
+            [name]="pokemon.name"
+            [url]="pokemon.sprite"
+            [size]="210"
+            [priority]="true"
+          />
+        </div>
+        <dl class="pokemon-detail__measurements">
+          <div>
+            <dt>Height</dt>
+            <dd>{{ pokemon.height | number: '1.0-1' }} <span>m</span></dd>
+          </div>
+          <div>
+            <dt>Weight</dt>
+            <dd>{{ pokemon.weight | number: '1.0-1' }} <span>kg</span></dd>
+          </div>
+          <div>
+            <dt>Base total</dt>
+            <dd>{{ pokemon.total }}</dd>
+          </div>
+        </dl>
+      } @else if (displayStatus() === 'loading') {
+        <div class="pokemon-detail__loading-types" aria-hidden="true"></div>
+        <div class="pokemon-detail__art">
+          <div class="pokemon-detail__loading-art" aria-hidden="true"></div>
+        </div>
+        <div class="pokemon-detail__loading-measurements" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </div>
+        <span class="sr-only" role="status">Loading this Pokémon’s stats and abilities.</span>
+      } @else if (displayStatus() === 'error') {
+        <app-async-state
+          status="error"
+          title="Details couldn’t load"
+          [message]="state().error ?? 'Please try again.'"
+          (retry)="retry()"
+        />
+      } @else {
+        <app-async-state
+          status="empty"
+          title="Pokémon not found"
+          message="There’s no profile for this Pokémon. Try another one."
+        />
+      }
+    </div>
+    <section
+      class="pokemon-detail__stats"
+      aria-label="Base stats"
+      [hidden]="displayStatus() === 'error' || displayStatus() === 'empty'"
+    >
+      <div class="pokemon-detail__section-heading">
+        <h3>Base stats</h3>
+        <span>STAT OVERVIEW</span>
+      </div>
+      <app-stat-radar [pokemon]="state().data" [busy]="displayStatus() !== 'success'" />
+      @if (state().status === 'success' && state().data; as pokemon) {
+        <dl class="pokemon-detail__stat-list">
+          @for (column of columns; track column.key) {
+            <div class="pokemon-detail__stat-row">
+              <dt>{{ column.label }}</dt>
+              <dd>{{ column.key === 'total' ? pokemon.total : pokemon.stats[column.key] }}</dd>
+              <span class="pokemon-detail__bar" aria-hidden="true"
+                ><span
+                  [style.width.%]="
+                    ((column.key === 'total' ? pokemon.total : pokemon.stats[column.key]) / 255) *
+                    100
+                  "
+                ></span
+              ></span>
+            </div>
+          }
+        </dl>
+      } @else if (displayStatus() === 'loading') {
+        <div class="pokemon-detail__stat-skeleton" aria-hidden="true">
+          @for (column of columns; track column.key) {
+            <span></span>
+          }
+        </div>
+      }
+    </section>
+    @if (state().status === 'success' && state().data; as pokemon) {
+      <section class="pokemon-detail__abilities" aria-label="Abilities">
+        <div class="pokemon-detail__section-heading">
+          <h3>Abilities</h3>
+          <span>{{ pokemon.abilities.length }} TOTAL</span>
+        </div>
+        @for (ability of pokemon.abilities; track ability.name) {
+          <article class="pokemon-detail__ability">
+            <h4>
+              {{ ability.name | titlecase }}
+              @if (ability.hidden) {
+                <span>Hidden</span>
+              }
+            </h4>
+            <p>{{ ability.effect }}</p>
+          </article>
+        } @empty {
+          <p class="pokemon-detail__empty">No abilities are available for this Pokémon.</p>
+        }
+      </section>
+    }
+  </div>
+  <footer class="pokemon-detail__footer">
+    <button
+      type="button"
+      class="button button--secondary"
+      [disabled]="previousId() === null"
+      (click)="navigate.emit(previousId()!)"
+    >
+      <img src="assets/icons/ic_arrow_left.svg" width="18" height="18" alt="" aria-hidden="true" />
+      Previous
+    </button>
+    <button
+      type="button"
+      class="button button--secondary"
+      [disabled]="nextId() === null"
+      (click)="navigate.emit(nextId()!)"
+    >
+      Next
+      <img
+        class="pokemon-detail__next"
+        src="assets/icons/ic_arrow_left.svg"
+        width="18"
+        height="18"
+        alt=""
+        aria-hidden="true"
+      />
+    </button>
+  </footer>
+</dialog>

@@ -1,0 +1,236 @@
+<section
+  class="pokemon-table"
+  aria-label="Pokémon catalog"
+  [attr.aria-busy]="status() === 'loading'"
+>
+  <div class="pokemon-table__toolbar">
+    <div class="pokemon-table__search">
+      <label class="field-label" for="pokemon-search">Search Pokémon</label>
+      <div class="pokemon-table__search-field">
+        <img src="assets/icons/ic_search.svg" width="20" height="20" alt="" aria-hidden="true" />
+        <input
+          id="pokemon-search"
+          type="search"
+          [formControl]="search"
+          placeholder="Search by name…"
+          autocomplete="off"
+        />
+      </div>
+    </div>
+    <div class="pokemon-table__type">
+      <label class="field-label" for="pokemon-type">Filter by type</label>
+      <select
+        id="pokemon-type"
+        #typeSelect
+        [value]="controls().type"
+        (change)="changeType(typeSelect.value)"
+      >
+        <option value="">All types</option>
+        @for (type of types; track type) {
+          <option [value]="type">{{ type | titlecase }}</option>
+        }
+      </select>
+    </div>
+    <button
+      class="button button--secondary pokemon-table__refresh"
+      type="button"
+      (click)="retry.emit()"
+      [disabled]="status() === 'loading' || status() === 'idle'"
+    >
+      <img src="assets/icons/ic_refresh.svg" width="16" height="16" alt="" aria-hidden="true" />
+      Refresh
+    </button>
+  </div>
+  <div class="pokemon-table__caption">
+    <h2>
+      All Pokémon
+      <span class="pokemon-table__count">{{ status() === 'success' ? page().total : '—' }}</span>
+    </h2>
+    <span class="pokemon-table__hint">Select a Pokémon to explore its stats</span>
+  </div>
+  <div
+    class="pokemon-table__scroll"
+    tabindex="0"
+    role="region"
+    aria-label="Scrollable Pokémon stats table"
+  >
+    @if (status() === 'error') {
+      <div class="pokemon-table__state">
+        <app-async-state
+          status="error"
+          title="The Pokédex couldn’t load"
+          [message]="error() ?? 'Check your connection and try again.'"
+          (retry)="retry.emit()"
+        />
+      </div>
+    } @else if (status() === 'success' && page().rows.length === 0) {
+      <div class="pokemon-table__state">
+        <app-async-state
+          status="empty"
+          title="No Pokémon found"
+          message="Try another name or choose a different type."
+        />
+        @if (controls().search || controls().type) {
+          <button type="button" class="button button--secondary" (click)="clearFilters()">
+            Clear filters
+          </button>
+        }
+      </div>
+    } @else {
+      <table>
+        <caption class="sr-only">
+          Pokémon with types and base stats. Stat column buttons change the sort order.
+        </caption>
+        <thead>
+          <tr>
+            <th scope="col"><span class="sr-only">Sprite</span></th>
+            <th scope="col">Pokémon</th>
+            <th scope="col">Type</th>
+            @for (column of columns; track column.key) {
+              <th
+                scope="col"
+                [attr.aria-sort]="
+                  controls().sort === column.key
+                    ? controls().direction === 'asc'
+                      ? 'ascending'
+                      : 'descending'
+                    : 'none'
+                "
+              >
+                <button
+                  type="button"
+                  class="pokemon-table__sort"
+                  (click)="sort(column.key)"
+                  [attr.aria-label]="'Sort by ' + column.label"
+                  [class.pokemon-table__sort--active]="controls().sort === column.key"
+                >
+                  {{ column.label }}
+                  <img
+                    src="assets/icons/ic_dropdown.svg"
+                    width="12"
+                    height="12"
+                    alt=""
+                    aria-hidden="true"
+                    [class.pokemon-table__sort-arrow--up]="
+                      controls().sort === column.key && controls().direction === 'asc'
+                    "
+                  />
+                </button>
+              </th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @if (status() === 'loading' || status() === 'idle') {
+            @for (row of skeletonRows(); track row) {
+              <tr class="pokemon-table__skeleton" aria-hidden="true">
+                <td><span class="skeleton skeleton--circle"></span></td>
+                <td><span class="skeleton skeleton--name"></span></td>
+                <td><span class="skeleton skeleton--type"></span></td>
+                @for (column of columns; track column.key) {
+                  <td><span class="skeleton skeleton--stat"></span></td>
+                }
+              </tr>
+            }
+          } @else {
+            @for (pokemon of page().rows; track pokemon.id) {
+              <tr
+                class="pokemon-table__row"
+                [class.pokemon-table__row--selected]="selectedId() === pokemon.id"
+                (click)="selectRow(pokemon, $event)"
+              >
+                <td>
+                  <app-pokemon-sprite [name]="pokemon.name" [url]="pokemon.sprite" [size]="56" />
+                </td>
+                <td>
+                  <span class="pokemon-table__number"
+                    >#{{ pokemon.id.toString().padStart(4, '0') }}</span
+                  >
+                  <button
+                    type="button"
+                    class="pokemon-table__name"
+                    aria-haspopup="dialog"
+                    [attr.aria-expanded]="selectedId() === pokemon.id"
+                    [attr.aria-label]="'View ' + pokemon.name + ' details'"
+                  >
+                    {{ pokemon.name | titlecase }}
+                  </button>
+                </td>
+                <td>
+                  <div class="pokemon-table__badges">
+                    @for (type of pokemon.types; track type) {
+                      <app-type-badge [type]="type" />
+                    }
+                  </div>
+                </td>
+                @for (column of columns; track column.key) {
+                  <td
+                    class="pokemon-table__stat"
+                    [class.pokemon-table__stat--total]="column.key === 'total'"
+                  >
+                    {{ column.key === 'total' ? pokemon.total : pokemon.stats[column.key] }}
+                  </td>
+                }
+              </tr>
+            }
+          }
+        </tbody>
+      </table>
+    }
+  </div>
+  <div class="sr-only" role="status">
+    @if (status() === 'loading') {
+      Loading the Pokémon catalog.
+    } @else if (status() === 'success') {
+      {{ page().total }} Pokémon found.
+    }
+  </div>
+  <footer class="pokemon-table__footer">
+    <span>{{ rangeStart() }}–{{ rangeEnd() }} of {{ page().total }} Pokémon</span>
+    <div class="pokemon-table__pagination">
+      <label for="page-size">Rows per page</label>
+      <select
+        id="page-size"
+        #pageSizeSelect
+        [value]="controls().pageSize"
+        (change)="changePageSize(pageSizeSelect.value)"
+      >
+        @for (size of pageSizes; track size) {
+          <option [value]="size">{{ size }}</option>
+        }
+      </select>
+      <span>Page {{ page().page + 1 }} of {{ page().pageCount }}</span>
+      <button
+        class="icon-button"
+        type="button"
+        aria-label="Previous page"
+        [disabled]="page().page === 0 || status() !== 'success'"
+        (click)="controlsChanged.emit({ page: page().page - 1 })"
+      >
+        <img
+          src="assets/icons/ic_arrow_left.svg"
+          width="20"
+          height="20"
+          alt=""
+          aria-hidden="true"
+        />
+      </button>
+      <button
+        class="icon-button"
+        type="button"
+        aria-label="Next page"
+        [disabled]="page().page + 1 >= page().pageCount || status() !== 'success'"
+        (click)="controlsChanged.emit({ page: page().page + 1 })"
+      >
+        <img
+          class="pokemon-table__next"
+          src="assets/icons/ic_arrow_left.svg"
+          width="20"
+          height="20"
+          alt=""
+          aria-hidden="true"
+        />
+      </button>
+    </div>
+  </footer>
+</section>

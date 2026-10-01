@@ -1,0 +1,255 @@
+.pokemon-table {
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-2);
+  box-shadow: var(--shadow-card);
+
+  &__toolbar {
+    display: flex;
+    align-items: flex-end;
+    gap: 1rem;
+    padding: 1.5rem;
+  }
+  &__search {
+    flex: 1;
+    max-width: 440px;
+  }
+  &__search-field {
+    position: relative;
+    img {
+      position: absolute;
+      top: 13px;
+      left: 13px;
+    }
+    input {
+      width: 100%;
+      padding-left: 2.6rem;
+    }
+  }
+  &__type {
+    min-width: 190px;
+    select {
+      width: 100%;
+    }
+  }
+  &__refresh {
+    margin-left: auto;
+    height: 46px;
+  }
+  &__caption {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 0 1.5rem 1rem;
+    h2 {
+      display: flex;
+      gap: 0.6rem;
+      align-items: center;
+      margin: 0;
+      font-size: 1rem;
+    }
+  }
+  &__count {
+    padding: 0.25rem 0.55rem;
+    border-radius: var(--radius-pill);
+    background: var(--color-surface);
+    font: 0.75rem var(--font-mono);
+  }
+  &__hint {
+    font-size: 0.78rem;
+    color: var(--color-muted);
+  }
+  &__scroll {
+    min-height: 630px;
+    max-height: 630px;
+    overflow: auto;
+    border-block: 1px solid var(--color-border);
+  }
+  table {
+    width: 100%;
+    min-width: 1000px;
+    border-collapse: collapse;
+    text-align: left;
+  }
+  thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: var(--color-surface);
+  }
+  th {
+    height: 50px;
+    font-size: 0.7rem;
+    color: var(--color-muted);
+    white-space: nowrap;
+  }
+  th,
+  td {
+    padding: 0.6rem 0.8rem;
+  }
+  th:first-child,
+  td:first-child {
+    padding-left: 1.5rem;
+    width: 80px;
+  }
+  th:nth-child(2) {
+    min-width: 180px;
+  }
+  th:nth-child(3) {
+    min-width: 140px;
+  }
+  th:last-child,
+  td:last-child {
+    padding-right: 1.5rem;
+  }
+  td {
+    border-top: 1px solid var(--color-border-soft);
+    height: 78px;
+  }
+  &__sort {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    font-size: inherit;
+    color: inherit;
+    font-weight: 600;
+    &--active {
+      color: var(--color-primary);
+    }
+  }
+  &__sort-arrow--up {
+    transform: rotate(180deg);
+  }
+  &__row {
+    cursor: pointer;
+    &:hover,
+    &:focus-within {
+      background: var(--color-hover);
+    }
+    &--selected {
+      background: var(--color-primary-soft);
+    }
+  }
+  &__number {
+    display: block;
+    margin-bottom: 0.2rem;
+    color: var(--color-muted);
+    font: 0.68rem var(--font-mono);
+  }
+  &__name {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--color-text);
+    font-size: 0.88rem;
+    font-weight: 650;
+    text-align: left;
+  }
+  &__badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    max-width: 145px;
+  }
+  &__stat {
+    font: 0.85rem var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    &--total {
+      font-weight: 700;
+      color: var(--color-primary);
+    }
+  }
+  &__state {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 628px;
+    text-align: center;
+  }
+  &__footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: center;
+    padding: 1.25rem 1.5rem;
+    font-size: 0.75rem;
+    color: var(--color-muted);
+  }
+  &__pagination {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    select {
+      min-height: 34px;
+      padding: 0.3rem 0.5rem;
+    }
+  }
+  &__next {
+    transform: rotate(180deg);
+  }
+}
+.skeleton {
+  display: block;
+  height: 12px;
+  border-radius: var(--radius-sm);
+  background: var(--color-skeleton);
+  &--circle {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+  }
+  &--name {
+    width: 115px;
+  }
+  &--type {
+    width: 75px;
+    height: 24px;
+  }
+  &--stat {
+    width: 28px;
+  }
+}
+@media (max-width: 640px) {
+  .pokemon-table {
+    &__toolbar {
+      flex-wrap: wrap;
+      padding: 1rem;
+      gap: 0.75rem;
+    }
+    &__search {
+      flex-basis: 100%;
+      max-width: none;
+    }
+    &__type {
+      flex: 1;
+      min-width: 0;
+    }
+    &__caption {
+      padding-inline: 1rem;
+    }
+    &__hint {
+      display: none;
+    }
+    &__footer {
+      padding: 1rem;
+    }
+    &__pagination {
+      gap: 0.65rem;
+    }
+    &__scroll {
+      min-height: 560px;
+      max-height: 560px;
+    }
+    &__state {
+      min-height: 558px;
+    }
+  }
+}
