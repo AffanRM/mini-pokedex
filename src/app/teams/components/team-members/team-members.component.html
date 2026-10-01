@@ -1,0 +1,85 @@
+<section
+  class="team-members"
+  aria-labelledby="team-members-title"
+  [attr.aria-busy]="state().status === 'loading'"
+  [style.--member-rows]="rows()"
+  [style.--member-rows-mobile]="mobileRows()"
+>
+  <header class="team-members__heading">
+    <div>
+      <p class="eyebrow">LINEUP OVERVIEW</p>
+      <h2 id="team-members-title">{{ team()?.name ?? 'Choose your team' }}</h2>
+    </div>
+    @if (team()?.pending) {
+      <span class="team-members__pending">Saving team…</span>
+    }
+  </header>
+  @if (!team()) {
+    <app-async-state
+      status="empty"
+      title="Choose a lineup to explore"
+      message="Select a saved team or create a new one."
+    />
+  } @else if (state().status === 'loading' || state().status === 'idle') {
+    <div class="team-members__loading">
+      <app-async-state
+        status="loading"
+        title="Meeting your team"
+        message="Loading sprites, types and base stats."
+      />
+    </div>
+  } @else if (state().status === 'error') {
+    <app-async-state
+      status="error"
+      title="Team members couldn’t load"
+      [message]="state().error ?? 'Check your connection and try again.'"
+      (retry)="retry.emit()"
+    />
+  } @else if (!members().length) {
+    <app-async-state
+      status="empty"
+      title="This lineup has no members"
+      message="Create a new team with at least one Pokémon."
+    />
+  } @else {
+    <div class="team-members__grid">
+      @for (pokemon of members(); track pokemon.id; let index = $index) {
+        <article class="team-members__member">
+          <span class="team-members__slot">SLOT {{ index + 1 }}</span
+          ><app-pokemon-sprite [name]="pokemon.name" [url]="pokemon.sprite" [size]="90" />
+          <h3>{{ pokemon.name | titlecase }}</h3>
+          <div class="team-members__types">
+            @for (type of pokemon.types; track type) {
+              <app-type-badge [type]="type" />
+            }
+          </div>
+          <span class="team-members__base">{{ pokemon.total }} base total</span>
+        </article>
+      }
+    </div>
+    <div class="team-members__summary">
+      <div class="team-members__total">
+        <span>Combined base stats</span><strong>{{ total() }}</strong>
+      </div>
+      <dl class="team-members__stats">
+        @for (stat of totals(); track stat.label) {
+          <div>
+            <dt>{{ stat.label }}</dt>
+            <dd>{{ stat.value }}</dd>
+          </div>
+        }
+      </dl>
+      <h3>Type distribution</h3>
+      <p class="team-members__hint">
+        Number of members with each type. Dual-type Pokémon count in both.
+      </p>
+      <div class="team-members__distribution">
+        @for (entry of types(); track entry.type) {
+          <span
+            ><app-type-badge [type]="entry.type" /><strong>{{ entry.count }}</strong></span
+          >
+        }
+      </div>
+    </div>
+  }
+</section>

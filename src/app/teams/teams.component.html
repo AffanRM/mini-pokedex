@@ -1,0 +1,47 @@
+<main class="teams-page">
+  <div class="teams-page__intro">
+    <p class="eyebrow">BETTER TOGETHER</p>
+    <h1>Every great adventure needs a team.</h1>
+    <p>Build your lineup, explore its strengths, and make it your own.</p>
+  </div>
+  <div class="teams-page__notice" role="status" aria-live="polite">{{ notice() }}</div>
+  <div class="teams-page__layout">
+    <aside class="teams-page__builder">
+      <app-team-builder
+        [available]="state().status === 'success'"
+        [submitting]="submitting()"
+        [error]="createError()"
+        [savedVersion]="savedVersion()"
+        (submitTeam)="create($event)"
+      />
+    </aside>
+    <div class="teams-page__collection">
+      <app-team-list
+        [state]="state()"
+        [selectedId]="selectedId()"
+        (selected)="selectedId.set($event)"
+        (deleted)="delete($event)"
+        (retry)="refresh()"
+      />
+      @if (state().mutationError; as error) {
+        @if (error.operation === 'delete') {
+          <div class="teams-page__error" role="alert">
+            <p>{{ error.message }} The team has been restored.</p>
+            <button class="button button--secondary" type="button" (click)="retryDelete()">
+              Retry deletion</button
+            ><button
+              class="button button--secondary"
+              type="button"
+              (click)="store.dismissMutationError()"
+            >
+              Dismiss
+            </button>
+          </div>
+        }
+      }
+      @if (state().status === 'success') {
+        <app-team-members [team]="selectedTeam()" [state]="members()" (retry)="retryMembers()" />
+      }
+    </div>
+  </div>
+</main>

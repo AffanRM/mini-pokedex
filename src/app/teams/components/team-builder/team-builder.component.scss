@@ -1,0 +1,57 @@
+.team-builder {
+  padding: 1.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-2);
+  box-shadow: var(--shadow-card);
+  &__heading {
+    margin-bottom: 1.5rem;
+    h2 {
+      margin: 0.5rem 0;
+      font-size: 1.35rem;
+      letter-spacing: -0.035em;
+    }
+    p {
+      color: var(--color-muted);
+      font-size: 0.8rem;
+      line-height: 1.6;
+    }
+  }
+  input {
+    width: 100%;
+  }
+  &__hint {
+    margin: 0.5rem 0;
+    font-size: 0.7rem;
+    color: var(--color-muted);
+    line-height: 1.6;
+  }
+  &__validation {
+    min-height: 30px;
+    margin-bottom: 0.75rem;
+    color: var(--color-danger);
+    font-size: 0.72rem;
+    line-height: 1.6;
+    button {
+      border: 0;
+      background: transparent;
+      padding: 0.2rem;
+      text-decoration: underline;
+      color: inherit;
+    }
+  }
+  &__checking {
+    color: var(--color-muted);
+  }
+  &__error {
+    padding: 0.8rem;
+    color: var(--color-danger);
+    background: var(--color-primary-soft);
+    border-radius: var(--radius-md);
+    font-size: 0.78rem;
+    line-height: 1.6;
+  }
+  &__submit {
+    width: 100%;
+  }
+}

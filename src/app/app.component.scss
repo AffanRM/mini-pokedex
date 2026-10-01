@@ -28,11 +28,19 @@
     display: inline-flex;
     align-items: center;
     min-height: 76px;
-    color: var(--color-primary);
-    border-bottom: 2px solid var(--color-primary);
+    color: var(--color-muted);
+    border-bottom: 2px solid transparent;
     text-decoration: none;
     font-size: 0.8rem;
     font-weight: 650;
+    &--active {
+      color: var(--color-primary);
+      border-bottom-color: var(--color-primary);
+    }
+  }
+  &__header-inner nav {
+    display: flex;
+    gap: 1.5rem;
   }
   &__edition {
     display: flex;
@@ -51,7 +59,14 @@
 }
 @media (max-width: 640px) {
   .app-shell__header-inner {
-    gap: 1.5rem;
+    gap: 1rem;
+  }
+  .app-shell__brand {
+    font-size: 1rem;
+    gap: 0.4rem;
+  }
+  .app-shell__header-inner nav {
+    gap: 1rem;
   }
   .app-shell__edition {
     display: none;

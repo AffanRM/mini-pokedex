@@ -1,0 +1,94 @@
+<div class="pokemon-picker">
+  <label class="field-label" for="team-pokemon-search"
+    >Choose Pokémon <span>{{ selected().length }}/{{ limit }}</span></label
+  >
+  <div class="pokemon-picker__search" #popup (focusout)="onBlur($event)">
+    <input
+      #searchInput
+      id="team-pokemon-search"
+      type="search"
+      role="combobox"
+      aria-autocomplete="list"
+      aria-controls="pokemon-suggestions"
+      [attr.aria-expanded]="open()"
+      [attr.aria-activedescendant]="open() ? activeId() : null"
+      [attr.aria-invalid]="invalid()"
+      aria-describedby="pokemon-picker-hint pokemon-picker-error"
+      [formControl]="search"
+      autocomplete="off"
+      placeholder="Search for a team member…"
+      (focus)="onFocus()"
+      (keydown)="onKeydown($event)"
+    />
+    @if (open()) {
+      <div id="pokemon-suggestions" class="pokemon-picker__dropdown">
+        @if (selected().length >= limit) {
+          <p class="pokemon-picker__message">
+            Your six slots are full. Remove a member to choose another.
+          </p>
+        } @else if (status() === 'success') {
+          <ul role="listbox" aria-label="Pokémon suggestions">
+            @for (pokemon of available(); track pokemon.id; let index = $index) {
+              <li role="presentation">
+                <button
+                  type="button"
+                  role="option"
+                  tabindex="-1"
+                  [id]="'pokemon-option-' + pokemon.id"
+                  [attr.aria-selected]="activeIndex() === index"
+                  (click)="pick(pokemon)"
+                  [attr.aria-label]="'Add ' + pokemon.name + ' to team'"
+                >
+                  <app-pokemon-sprite [name]="pokemon.name" [url]="pokemon.sprite" [size]="40" />
+                  <span>{{ pokemon.name | titlecase }}</span>
+                  <span class="pokemon-picker__types">
+                    @for (type of pokemon.types; track type) {
+                      <app-type-badge [type]="type" />
+                    }
+                  </span>
+                </button>
+              </li>
+            }
+          </ul>
+        } @else {
+          <app-async-state
+            [status]="status()"
+            [title]="
+              status() === 'empty'
+                ? 'No available Pokémon'
+                : status() === 'error'
+                  ? 'Pokémon suggestions couldn’t load'
+                  : 'Finding Pokémon'
+            "
+            [message]="state().error ?? 'Try another name. Already selected Pokémon are excluded.'"
+            (retry)="retry()"
+          />
+        }
+      </div>
+    }
+  </div>
+  <p id="pokemon-picker-hint" class="pokemon-picker__hint">
+    Pick 1–6 different Pokémon. Use arrow keys and Enter to choose.
+  </p>
+  <div class="pokemon-picker__chips" aria-label="Selected Pokémon">
+    @for (pokemon of selected(); track pokemon.id) {
+      <span class="pokemon-picker__chip"
+        ><app-pokemon-sprite [name]="pokemon.name" [url]="pokemon.sprite" [size]="28" />{{
+          pokemon.name | titlecase
+        }}<button
+          type="button"
+          [disabled]="disabled()"
+          [attr.aria-label]="'Remove ' + pokemon.name + ' from team'"
+          (click)="remove(pokemon.id)"
+        >
+          <img
+            src="assets/icons/ic_close.svg"
+            width="14"
+            height="14"
+            alt=""
+            aria-hidden="true"
+          /></button
+      ></span>
+    }
+  </div>
+</div>

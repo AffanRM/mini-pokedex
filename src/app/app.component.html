@@ -5,7 +5,21 @@
       <span>Mini <strong>Pokédex</strong></span>
     </a>
     <nav aria-label="Main navigation">
-      <a class="app-shell__nav-link" routerLink="/" aria-current="page">Pokédex</a>
+      <a
+        class="app-shell__nav-link"
+        routerLink="/"
+        routerLinkActive="app-shell__nav-link--active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        ariaCurrentWhenActive="page"
+        >Pokédex</a
+      >
+      <a
+        class="app-shell__nav-link"
+        routerLink="/teams"
+        routerLinkActive="app-shell__nav-link--active"
+        ariaCurrentWhenActive="page"
+        >Teams</a
+      >
     </nav>
     <span class="app-shell__edition">FIELD EDITION <span>01</span></span>
   </div>
