@@ -1,7 +1,8 @@
 # Mini Pokedex assessment checklist
 
-Status: foundation, data services, stores and validators verified; UI and GitHub
-publication pending. An unchecked
+Status: foundation, data services, stores, validators and Pokédex UI verified;
+public GitHub repository and existing CI verified. Teams UI and final review
+remain pending. An unchecked
 item is not yet verified.
 
 ## Evaluation and scope
@@ -27,7 +28,7 @@ from receipt; confirm the actual receipt date separately.
 - [x] Install compatible dependencies and commit the lockfile.
 - [x] Configure ESLint, Prettier, Husky and commitlint.
 - [x] Verify production build, tests, lint and formatting.
-- [ ] Initialize Git and create a public GitHub repository.
+- [x] Initialize Git and create a public GitHub repository.
 - [x] Keep assessment PDFs, temporary files and secrets out of public Git.
 
 ## 2. GraphQL and state
@@ -53,32 +54,32 @@ from receipt; confirm the actual receipt date separately.
 
 ## 3. Components and Signals
 
-- [ ] All components standalone, OnPush, with inject() dependency injection.
-- [ ] UI state (selection, panel visibility, loading flags) uses signal().
+- [x] All implemented components standalone, OnPush, with inject() dependency injection.
+- [x] Pokédex UI selection/panel state uses signal(); loading derives with computed().
 - [ ] computed() derives selected-team type distribution and base-stat totals.
 - [ ] effect() persists selected team to localStorage; tolerate unavailable storage.
-- [ ] toSignal() bridges store selectors into templates.
-- [ ] Component inputs/outputs use input()/output(), never legacy decorators.
-- [ ] Components use separate `.component.ts`, `.component.html`, `.component.scss`.
-- [ ] Service/model/util names follow `.service.ts`, `.model.ts`, `.util.ts`.
+- [x] toSignal() bridges store selectors into templates.
+- [x] Implemented component inputs/outputs use input()/output(), never legacy decorators.
+- [x] Components use separate `.component.ts`, `.component.html`, `.component.scss`.
+- [x] Service/model/util names follow `.service.ts`, `.model.ts`, `.util.ts`.
 - [x] Public service/store methods have JSDoc.
-- [ ] SCSS uses BEM and :root CSS custom properties for design tokens.
-- [ ] SVG icons use `src/assets/icons/ic_<name>.svg`, fixed dimensions,
+- [x] SCSS uses BEM and :root CSS custom properties for design tokens.
+- [x] SVG icons use `src/assets/icons/ic_<name>.svg`, fixed dimensions,
       decorative alt="" and aria-hidden="true" where appropriate.
 
 ## 4. Pokedex table and detail panel
 
-- [ ] Columns: sprite, name, colored types, HP, Attack, Defense, Sp.Atk,
+- [x] Columns: sprite, name, colored types, HP, Attack, Defense, Sp.Atk,
       Sp.Def, Speed and total.
-- [ ] Every stat column, including total, sorts ascending/descending.
-- [ ] Client pagination offers 10/25/50 rows; reset/clamp pages after filtering.
-- [ ] Debounced name search and dropdown type filter compose with sorting/paging.
+- [x] Every stat column, including total, sorts ascending/descending.
+- [x] Client pagination offers 10/25/50 rows; reset/clamp pages after filtering.
+- [x] Debounced name search and dropdown type filter compose with sorting/paging.
 - [x] Fetch upstream data in pages; document catalog completeness and cache strategy.
-- [ ] Row activation opens a sliding detail side panel; keyboard activation works.
-- [ ] Full Pokemon info and abilities are shown with meaningful empty cases.
-- [ ] Chart.js radar displays six stats and animates when Pokemon changes.
-- [ ] Cancel stale detail requests when selection changes; clean up chart resources.
-- [ ] Panel supports Escape, focus management and accessible labels.
+- [x] Row activation opens a sliding detail side panel; keyboard activation works.
+- [x] Full Pokemon info and abilities are shown with meaningful empty cases.
+- [x] Chart.js radar displays six stats and animates when Pokemon changes.
+- [x] Cancel stale detail requests when selection changes; clean up chart resources.
+- [x] Panel supports Escape, focus management and accessible labels.
 
 ## 5. Team form and list
 
@@ -99,8 +100,8 @@ from receipt; confirm the actual receipt date separately.
 
 | View                           | Loading | Empty | Error + Retry | Success |
 | ------------------------------ | ------- | ----- | ------------- | ------- |
-| Pokedex table                  | [ ]     | [ ]   | [ ]           | [ ]     |
-| Detail panel                   | [ ]     | [ ]   | [ ]           | [ ]     |
+| Pokedex table                  | [x]     | [x]   | [x]           | [x]     |
+| Detail panel                   | [x]     | [x]   | [x]           | [x]     |
 | Team list and member hydration | [ ]     | [ ]   | [ ]           | [ ]     |
 | Autocomplete dropdown          | [ ]     | [ ]   | [ ]           | [ ]     |
 
@@ -119,8 +120,21 @@ uncached requests must not silently display an empty or stale success state.
 - [ ] README documents install, ng serve, mock server, architecture and improvements.
 - [ ] README accurately states mock persistence and known limitations.
 - [ ] Clean checkout succeeds with npm ci and documented checks.
-- [ ] Public GitHub repository has incremental Conventional Commits.
+- [x] Public GitHub repository has incremental Conventional Commits.
 - [ ] No more than ONE optional bonus; only within the ten-hour effort budget.
 
 Planned optional bonus: skeleton shimmer and micro-animations (option 4),
 only after all required behavior and verification pass.
+
+## Pokédex checkpoint evidence
+
+- 39 tests in 11 files pass, including table controls/four states, page retry,
+  detail cancellation/four states and chart instance updates/destruction.
+- Live API catalog loaded 1,302 records during review; search/type filtering,
+  page sizes, profiles and previous/next navigation were exercised.
+- Desktop and 390px mobile layouts reviewed; horizontal scrolling is confined
+  to the stats table. Empty/error states sit outside the wide table so their
+  actions remain accessible on narrow screens.
+- Escape restores focus to the native row button; no console errors observed.
+- Complete offline/throttled browser flows and Teams lifecycle cleanup are
+  still required before marking the assessment complete.

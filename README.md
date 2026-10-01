@@ -2,9 +2,9 @@
 
 Angular 21 frontend assessment using GraphQL, custom RxJS stores and Angular Signals.
 
-**Current status:** foundation, GraphQL services, RxJS stores and form validators
-are implemented and tested. The browsing/detail/team interfaces are next; the
-app still displays its foundation screen. Track verified requirements in
+**Current status:** the Pokédex browsing/detail interface, GraphQL services,
+RxJS stores and form validators are implemented and tested. The Teams interface
+and final submission review are next. Track verified requirements in
 [the assessment checklist](docs/assessment-checklist.md) and build stages in
 [the implementation plan](docs/implementation-plan.md).
 
@@ -50,7 +50,25 @@ npm run build
 
 `npm run check` runs all four commands. `npm run format` formats source and
 configuration files. Tests cover GraphQL errors/retry/timeout/cancellation,
-catalog caching, selectors, optimistic rollback/concurrency and form validators.
+catalog caching, selectors, optimistic rollback/concurrency, form validators,
+table interactions, detail states and chart lifecycle. Currently 39 tests pass.
+
+## Browse the Pokédex
+
+Search by name, combine it with a type filter, and sort any of the six stats or
+the total in either direction. Choose 10, 25 or 50 rows per page. The catalog
+includes alternate forms supplied by the API, so the count can change upstream.
+Click a row or activate its name button with the keyboard to open its profile.
+The panel shows measurements, English ability effects and an animated radar.
+Previous/Next follows the filtered, sorted catalog. Escape closes the panel and
+returns focus to the row's button. Reduced-motion preferences disable animations.
+
+Loading preserves table/detail layout. Zero matches offer Clear filters; failed
+catalog/detail requests offer a friendly message and explicit Retry. Automated
+tests cover these states and cancellation when selection changes. Live browser
+checks cover search, filtering, paging, detail navigation, keyboard closing and
+desktop/mobile layouts. Full offline/throttled browser review remains a final
+submission task alongside the Teams interface.
 
 ## Architecture
 
@@ -68,13 +86,18 @@ A started mutation finishes even if its initiating component leaves, bounded by
 the transport timeout. This prevents component teardown from leaving provisional
 teams in the store. Mutations are not automatically retried.
 
-Next, observable selectors will feed templates through `toSignal()`, Signals will
-hold UI state, `computed()` will derive summaries, and `effect()` will persist
-the selected team. Components are standalone and OnPush,
+Observable selectors feed templates through `toSignal()`. Signals hold selection
+and panel visibility; `computed()` derives loading state and adjacent Pokémon.
+Detail selection uses `switchMap` to cancel stale requests. The chart instance
+survives profile changes, animates dataset updates and is destroyed on teardown.
+Selected-team summaries and `effect()` persistence are planned for the Teams stage.
+Components are standalone and OnPush,
 with separate HTML/SCSS and signal-based inputs/outputs.
 
-No AWS Amplify or authentication is used. Chart.js is installed for the detail
-radar chart. Radar rendering and component communication are pending.
+No AWS Amplify or authentication is used. Chart.js radar controllers are explicitly
+registered and the Pokédex route is lazy loaded. Shared sprites, type badges and
+async-state components keep presentation consistent. SCSS uses BEM and root CSS
+tokens; decorative SVG assets have fixed dimensions and accessible treatment.
 
 ## Commits
 
