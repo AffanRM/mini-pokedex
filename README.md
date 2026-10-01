@@ -2,9 +2,9 @@
 
 Angular 21 frontend assessment using GraphQL, custom RxJS stores and Angular Signals.
 
-**Current status:** the Pokédex browsing/detail interface, GraphQL services,
-RxJS stores and form validators are implemented and tested. The Teams interface
-and final submission review are next. Track verified requirements in
+**Current status:** required Pokédex and Teams features are implemented and
+tested. Final submission review and the single planned bonus remain next.
+Track verified requirements in
 [the assessment checklist](docs/assessment-checklist.md) and build stages in
 [the implementation plan](docs/implementation-plan.md).
 
@@ -51,7 +51,8 @@ npm run build
 `npm run check` runs all four commands. `npm run format` formats source and
 configuration files. Tests cover GraphQL errors/retry/timeout/cancellation,
 catalog caching, selectors, optimistic rollback/concurrency, form validators,
-table interactions, detail states and chart lifecycle. Currently 39 tests pass.
+table interactions, detail states, chart lifecycle, team workflows, persistence
+and component teardown. Currently 53 tests in 16 files pass.
 
 ## Browse the Pokédex
 
@@ -68,7 +69,33 @@ catalog/detail requests offer a friendly message and explicit Retry. Automated
 tests cover these states and cancellation when selection changes. Live browser
 checks cover search, filtering, paging, detail navigation, keyboard closing and
 desktop/mobile layouts. Full offline/throttled browser review remains a final
-submission task alongside the Teams interface.
+submission task.
+
+## Build and explore teams
+
+Open the Teams tab. The supplied three teams load from the mock API. Select a
+team to see its members in slot order, combined base stats and type distribution.
+Dual-type members count in both of their types. Selection persists in localStorage;
+blocked storage does not prevent using the app. Temporary optimistic IDs are
+never persisted, and deleted/missing selections fall back to an available team.
+
+The reactive builder requires a unique name of 3–30 normalized characters and
+1–6 different Pokémon. Name checks and autocomplete debounce for 300ms. The
+picker supports arrow keys, Enter, Escape and removable chips. Validation appears
+after interaction or a submit attempt. New teams use Ash Ketchum's trainer ID.
+
+A new team appears immediately while saving. Failures roll it back and retain
+the form values for an explicit retry. Successful saves clear the form and select
+the saved team. Deletions are optimistic, with rollback and Retry deletion on
+failure. List and member-load failures have independent retry actions. Refresh
+is disabled while mutations are pending. Multiple independent deletions can
+finish concurrently; repeated form submissions are guarded.
+
+Live browser review verified creation/deletion, selected-team reload persistence,
+duplicate-name checks, keyboard picking, empty autocomplete, desktop/mobile
+layouts and saving while the mock was stopped, then retrying after restart.
+QA teams were removed. Restarting the mock resets all teams to the original
+fixture; it does not provide durable backend storage.
 
 ## Architecture
 
@@ -90,14 +117,24 @@ Observable selectors feed templates through `toSignal()`. Signals hold selection
 and panel visibility; `computed()` derives loading state and adjacent Pokémon.
 Detail selection uses `switchMap` to cancel stale requests. The chart instance
 survives profile changes, animates dataset updates and is destroyed on teardown.
-Selected-team summaries and `effect()` persistence are planned for the Teams stage.
+Team-member summaries use `computed()`, and `effect()` persists the selected team
+through a storage service that tolerates browser privacy/quota restrictions.
+Async validator status is bridged with `toSignal()` so completion updates OnPush
+templates in zoneless Angular. Requests owned by a view cancel when it leaves;
+finite optimistic mutations finish in the store and reconcile their records.
 Components are standalone and OnPush,
 with separate HTML/SCSS and signal-based inputs/outputs.
 
 No AWS Amplify or authentication is used. Chart.js radar controllers are explicitly
-registered and the Pokédex route is lazy loaded. Shared sprites, type badges and
+registered; the Pokédex and Teams routes are lazy loaded. Shared sprites, type badges and
 async-state components keep presentation consistent. SCSS uses BEM and root CSS
 tokens; decorative SVG assets have fixed dimensions and accessible treatment.
+
+## Bonus scope
+
+Only option 4, skeleton shimmer and micro-animations, is planned. No other bonus
+will be implemented. It remains deferred until the required resilience review
+passes and only if the assessment's ten-hour effort limit permits it.
 
 ## Commits
 
