@@ -59,7 +59,7 @@ Set-Location 'C:\Users\affan\OneDrive\Desktop\BuzzerFan\Task'
 npm run check
 ```
 
-Expected: lint passes, Prettier passes, **58 tests in 17 files** pass, and the
+Expected: lint passes, Prettier passes, **59 tests in 17 files** pass, and the
 production build finishes without errors or budget warnings. These tests mock
 HTTP/data dependencies, so they do not require the live APIs.
 
@@ -129,6 +129,8 @@ Open Teams online. The initial list should have the three supplied teams.
    query to check cached results after the 300ms debounce. New queries on a fresh
    Teams-only session can additionally wait for the public API; keep focus in the
    field and confirm loading changes to results without another click.
+   After selection or Escape, clicking the still-focused field must also reopen
+   suggestions without first moving focus elsewhere.
 7. Quickly change a query from `bulba` to `char`. Stale results should not become
    selectable for the newer query. Try `zzzz-no-pokemon` for an empty dropdown.
 8. Add six different Pokémon. A seventh pick must be blocked. Remove one chip

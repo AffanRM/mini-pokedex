@@ -107,6 +107,34 @@ describe('PokemonPickerComponent', () => {
     );
     expect(document.activeElement).toBe(input);
   });
+  it('reopens suggestions by clicking the still-focused input after a pick or Escape', async () => {
+    const input = fixture.nativeElement.querySelector('input') as HTMLInputElement;
+    input.focus();
+    input.value = 'bul';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    await vi.advanceTimersByTimeAsync(300);
+    fixture.detectChanges();
+    fixture.nativeElement.querySelector('[role="option"]').click();
+    fixture.componentRef.setInput('selected', [pokemonFixture(1, 'bulbasaur')]);
+    await vi.advanceTimersByTimeAsync(300);
+    fixture.detectChanges();
+    expect(document.activeElement).toBe(input);
+    expect(input.getAttribute('aria-expanded')).toBe('false');
+
+    input.click();
+    fixture.detectChanges();
+    expect(input.getAttribute('aria-expanded')).toBe('true');
+    expect(fixture.nativeElement.textContent).toContain('No available Pokémon');
+    expect(document.activeElement).toBe(input);
+
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    fixture.detectChanges();
+    expect(input.getAttribute('aria-expanded')).toBe('false');
+    input.click();
+    fixture.detectChanges();
+    expect(input.getAttribute('aria-expanded')).toBe('true');
+    expect(document.activeElement).toBe(input);
+  });
   it('rejects seventh picks and cancels unfinished typeahead on teardown', async () => {
     const response = new Subject<readonly PokemonModel[]>();
     search.mockReturnValueOnce(response);

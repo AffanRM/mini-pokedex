@@ -3,10 +3,9 @@
 Angular 21 frontend assessment using GraphQL, custom RxJS stores and Angular Signals.
 
 **Current status:** all required features and bonus option 4 are implemented.
-The reviewed implementation, including the consecutive-pick correction, is
-published through `93c22ee` with passing GitHub CI. The picker reopens on typing,
-caches successful repeat searches, and keeps chip removal accessible at six picks.
-The final local check passed all 58 tests, lint, formatting and production build.
+The picker reopens on typing or clicking, caches successful repeat searches,
+and keeps chip removal accessible at six picks. The local check passed all
+59 tests, lint, formatting and production build.
 Track verified requirements in
 [the assessment checklist](docs/assessment-checklist.md) and build stages in
 [the implementation plan](docs/implementation-plan.md).
@@ -55,7 +54,7 @@ npm run build
 configuration files. Tests cover GraphQL errors/retry/timeout/cancellation,
 catalog caching, selectors, optimistic rollback/concurrency, form validators,
 table interactions, detail states, chart lifecycle, team workflows, persistence
-and component teardown. The current suite contains 58 tests in 17 files,
+and component teardown. The current suite contains 59 tests in 17 files,
 including uninterrupted consecutive picks and successful-search caching.
 Vitest suites are isolated to prevent their Chart.js module mocks from interfering.
 The published checkpoint was also verified with a fresh clone and `npm ci`.
@@ -174,10 +173,8 @@ feat(pokedex): add sortable stats table
 fix(teams): roll back failed optimistic creation
 ```
 
-The repository owner is **AffanRM**. The developer runs all commit and push
-commands manually; the coding agent prepares tested changes and supplies commands.
-Keep changes focused and commit each verified build stage. Assessment PDFs,
-temporary files and local credentials are excluded from Git.
+All changes are kept focused, with commits mapped to verified build stages.
+Assessment PDFs, temporary files, and local credentials are excluded from Git.
 
 ## Improvements with more time
 

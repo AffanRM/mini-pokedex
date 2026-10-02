@@ -19,7 +19,8 @@ The documentation record is now published at `eccc8e7` with passing CI. A later
 user check exposed a consecutive-picker focus bug missed by the earlier review.
 The correction reopens suggestions on typing and caches successful repeat
 queries. Owner publication at `93c22ee` and its passing CI were verified on
-3 October 2026; the final local check passed all 58 tests, lint, formatting and build.
+3 October 2026. A later click-reopening regression and README cleanup passed
+all 59 tests, lint, formatting and build; see the current manual Git workflow.
 
 1. **Foundation:** inspect the brief, validate tools, scaffold Angular 21,
    install dependencies, enforce style/commits, verify baseline, publish repo.

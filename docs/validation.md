@@ -5,6 +5,17 @@ https://github.com/AffanRM/mini-pokedex.
 
 ## Subsequent picker correction — 3 October 2026
 
+The follow-up report of typing requiring a refocus was reproduced against the
+server on port 4200. Its Node command line pointed to an older downloaded copy
+at `Downloads\test_pokedex\mini-pokedex`, whose picker template lacked the input
+handler already present in the published source. The corrected working repository
+was served separately with `ng serve --port 4201` to verify it independently.
+The additional click-on-an-already-focused-input case failed a new DOM regression.
+The input now opens suggestions on click as well as focus and typing; deliberate
+closing after selection or Escape is preserved. The full check passed 59 tests
+in 17 files, lint, formatting and production build. The README's personal workflow
+paragraph was replaced with standard commit-process wording.
+
 The owner published `eccc8e7` and its CI passed. Before submitting, the owner
 reported suggestions sometimes required refocusing after a pick. The earlier
 review missed typing the next name without leaving the focused search input.

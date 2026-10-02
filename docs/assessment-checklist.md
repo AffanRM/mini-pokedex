@@ -7,7 +7,8 @@ Fresh dependency installation and the full local check passed on 2 October 2026.
 Published documentation is at `eccc8e7` with passing CI. A subsequent user check
 found uninterrupted consecutive typing did not reopen the picker after a pick.
 The fix and search cache are published at `93c22ee`, with passing GitHub CI.
-The final local check on 3 October passed 58 tests, lint, formatting and build.
+The latest local check on 3 October passed 59 tests, lint, formatting and build,
+including reopening the still-focused picker by clicking after a pick or Escape.
 An unchecked item is not yet verified. Detailed evidence: [validation.md](validation.md).
 
 ## Evaluation and scope

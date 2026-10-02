@@ -1,33 +1,35 @@
-# Final documentation handoff
+# Final picker and documentation handoff
 
-The owner runs every commit/push. The coding agent does not stage, commit, push
-or rewrite history. Do not repeat earlier commit blocks.
+Run the commands manually. Do not repeat earlier commit blocks or rewrite history.
 
 ## Verified implementation
 
-Your picker correction is published at `93c22ee`; local HEAD and remote main
-matched, and its GitHub CI passed. The final local check passed lint, formatting,
-58 tests in 17 files and production build. No further application changes were
-needed in the final review.
+The earlier typing fix and documentation are published through `fe77ece`, with
+passing CI. The latest reported typing issue was reproduced in an older downloaded
+copy running from `Downloads\test_pokedex\mini-pokedex`; it lacks the input handler.
+Run the submission from the working repository below or obtain a fresh clone
+after publishing. Clicking the already-focused field also now reopens suggestions.
+A DOM regression covers clicks after selection and Escape. The local full check
+passed lint, formatting, 59 tests in 17 files and production build.
 
-The remaining changes only correct the run instructions' test count and record
-the verified publication and final browser checks in the documentation.
+The README now uses standard commit-process wording without personal workflow
+details. The remaining changes are ready for this final commit.
 
-## Publish the documentation
+## Publish the changes
 
 ```powershell
 Set-Location 'C:\Users\affan\OneDrive\Desktop\BuzzerFan\Task'
-npm run format:check
+npm run check
 git status --short
-git add README.md docs
+git add README.md docs src/app/teams/components/pokemon-picker/pokemon-picker.component.html src/app/teams/components/pokemon-picker/pokemon-picker.component.spec.ts
 git diff --cached --stat
-git commit -m "docs(readme): record final published verification"
+git commit -m "fix(teams): reopen picker on click and polish submission docs"
 git push
 git status
 ```
 
 Open https://github.com/AffanRM/mini-pokedex/actions and wait for the newest run,
-matching this documentation commit, to pass. Then send the assessment email with
+matching this commit, to pass. Then send the assessment email with
 https://github.com/AffanRM/mini-pokedex. Public read/clone access is available;
 no collaborator invitation is needed for reviewing a public repository.
 
