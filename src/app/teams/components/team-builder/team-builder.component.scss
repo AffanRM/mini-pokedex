@@ -43,6 +43,9 @@
   &__checking {
     color: var(--color-muted);
   }
+  &__availability {
+    min-height: 56px;
+  }
   &__error {
     padding: 0.8rem;
     color: var(--color-danger);

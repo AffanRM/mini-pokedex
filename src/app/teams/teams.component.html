@@ -41,7 +41,7 @@
           </div>
         }
       }
-      @if (state().status === 'success') {
+      @if (state().status === 'success' || selectedTeam()) {
         <app-team-members [team]="selectedTeam()" [state]="members()" (retry)="retryMembers()" />
       }
     </div>

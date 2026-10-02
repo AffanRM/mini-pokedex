@@ -157,4 +157,24 @@ describe('TeamsPage integration', () => {
     expect(ids).toEqual(['1', '2', '3']);
     subscription.unsubscribe();
   });
+  it('keeps the selected lineup mounted during list refresh and failed refresh recovery', async () => {
+    await loaded();
+    const memberPanel = fixture.nativeElement.querySelector('app-team-members');
+    const refresh = new Subject<readonly TeamModel[]>();
+    getTeams.mockReturnValueOnce(refresh);
+    fixture.componentInstance.refresh();
+    await fixture.whenStable();
+    expect(fixture.componentInstance.state().status).toBe('loading');
+    expect(fixture.componentInstance.selectedTeam()?.id).toBe('2');
+    expect(fixture.nativeElement.querySelector('app-team-members')).toBe(memberPanel);
+    refresh.error(new ApiError('Please try again.'));
+    await fixture.whenStable();
+    expect(fixture.nativeElement.textContent).toContain('Your teams couldn’t load');
+    expect(fixture.nativeElement.querySelector('app-team-members')).toBe(memberPanel);
+    getTeams.mockReturnValueOnce(of([teamFixture(), { ...teamFixture('2'), pokemonIds: [2] }]));
+    fixture.componentInstance.refresh();
+    await fixture.whenStable();
+    expect(fixture.componentInstance.state().status).toBe('success');
+    expect(fixture.nativeElement.querySelector('app-team-members')).toBe(memberPanel);
+  });
 });

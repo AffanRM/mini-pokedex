@@ -1,4 +1,6 @@
 .team-list {
+  // Reserve the same space for loading, errors, empty guidance and fixture cards.
+  min-height: 360px;
   &__heading {
     display: flex;
     align-items: center;

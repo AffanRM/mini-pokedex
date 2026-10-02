@@ -55,10 +55,8 @@ export class TeamsPage {
   private readonly storage = inject(StorageService);
   readonly state = toSignal(this.store.state$, { requireSync: true });
   readonly selectedId = signal(this.storage.get(SELECTED_TEAM_STORAGE_KEY));
-  readonly selectedTeam = computed(() =>
-    this.state().status === 'success'
-      ? (this.state().data.find((team) => team.id === this.selectedId()) ?? null)
-      : null,
+  readonly selectedTeam = computed(
+    () => this.state().data.find((team) => team.id === this.selectedId()) ?? null,
   );
   readonly submitting = signal(false);
   readonly createError = signal<string | null>(null);

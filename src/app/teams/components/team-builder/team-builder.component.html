@@ -63,9 +63,11 @@
         {{ error() }} Your choices are kept; try saving again.
       </p>
     }
-    @if (!available()) {
-      <p class="team-builder__hint">Load the team list successfully to start building.</p>
-    }
+    <div class="team-builder__availability">
+      @if (!available()) {
+        <p class="team-builder__hint">Load the team list successfully to start building.</p>
+      }
+    </div>
     <button
       class="button team-builder__submit"
       type="submit"
