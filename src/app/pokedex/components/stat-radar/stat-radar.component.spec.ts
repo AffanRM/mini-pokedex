@@ -43,7 +43,7 @@ describe('StatRadarComponent', () => {
     fixture = TestBed.createComponent(StatRadarComponent);
     fixture.componentRef.setInput('pokemon', pokemonFixture(1, 'bulbasaur'));
     fixture.detectChanges();
-    // Flush render callbacks explicitly; stability alone can precede afterNextRender in CI.
+    // Flush Angular's pending render work before asserting the chart lifecycle.
     TestBed.tick();
     await fixture.whenStable();
   });
