@@ -10,7 +10,7 @@
       role="combobox"
       aria-autocomplete="list"
       aria-controls="pokemon-suggestions"
-      [attr.aria-expanded]="open()"
+      [attr.aria-expanded]="open() && selected().length < limit"
       [attr.aria-activedescendant]="open() ? activeId() : null"
       [attr.aria-invalid]="invalid()"
       aria-describedby="pokemon-picker-hint pokemon-picker-error"
@@ -18,15 +18,12 @@
       autocomplete="off"
       placeholder="Search for a team member…"
       (focus)="onFocus()"
+      (input)="onInput()"
       (keydown)="onKeydown($event)"
     />
-    @if (open()) {
+    @if (open() && selected().length < limit) {
       <div id="pokemon-suggestions" class="pokemon-picker__dropdown">
-        @if (selected().length >= limit) {
-          <p class="pokemon-picker__message">
-            Your six slots are full. Remove a member to choose another.
-          </p>
-        } @else if (status() === 'success') {
+        @if (status() === 'success') {
           <ul role="listbox" aria-label="Pokémon suggestions">
             @for (pokemon of available(); track pokemon.id; let index = $index) {
               <li role="presentation">
@@ -95,4 +92,9 @@
       ></span>
     }
   </div>
+  @if (selected().length >= limit) {
+    <p class="pokemon-picker__message">
+      Your six slots are full. Remove a member to choose another.
+    </p>
+  }
 </div>

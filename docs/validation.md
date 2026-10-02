@@ -3,6 +3,39 @@
 Review date: 2 October 2026. Public repository:
 https://github.com/AffanRM/mini-pokedex.
 
+## Subsequent picker correction — 3 October 2026
+
+The owner published `eccc8e7` and its CI passed. Before submitting, the owner
+reported suggestions sometimes required refocusing after a pick. The earlier
+review missed typing the next name without leaving the focused search input.
+A new DOM regression failed with `aria-expanded="false"` on the old behavior.
+The picker now opens on native input events while retaining deliberate closing
+after a pick/removal/Escape. No additional focus click is required.
+
+Teams-first searches previously called the public API again for repeated text.
+The store now caches successful results, including empty matches, by normalized
+query with a 50-entry bound. Failed requests are not cached, and a cached entity
+subset is not treated as a complete broader query. Successful catalog refresh
+clears the query cache. The required 300ms debounce, cancellation, friendly error
+state and explicit Retry remain. New uncached queries can still incur API latency.
+The six-slot check also found the full-slots dropdown covered chip removal
+buttons. Full-slot guidance now appears below the chips; its regression asserts
+the dropdown is absent and the combobox reports collapsed at the limit.
+
+Three new regressions cover retained-focus consecutive picks, normalized/empty
+cache reuse, and failed/broader-query correctness: 58 tests in 17 files total.
+The full local check passed lint, formatting, all 58 tests and production build.
+The browser check used a fresh Teams-only page: typing each next name reopened
+loading/results while input focus stayed in place. First-time API queries showed
+visible loading; arrival of results did not require another click.
+After loading the shared catalog, all six members were picked consecutively
+without refocusing. At six picks the dropdown stayed collapsed, hit-testing
+confirmed the remove button was uncovered, and a pointer click reduced the count
+to five. New suggestions then opened normally. QA choices were never saved and
+the page was reloaded afterward; the three backend fixture teams remain intact.
+The correction remains local until the owner runs [git-workflow.md](git-workflow.md)
+and verifies the correction's latest GitHub CI.
+
 ## Publication verification
 
 The final implementation is now published at

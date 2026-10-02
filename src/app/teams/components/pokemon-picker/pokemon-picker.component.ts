@@ -115,6 +115,10 @@ export class PokemonPickerComponent {
   onFocus(): void {
     this.open.set(true);
   }
+  onInput(): void {
+    // A pick keeps input focus while closing results; typing must reopen them.
+    if (!this.disabled()) this.open.set(true);
+  }
   onBlur(event: FocusEvent): void {
     if (!this.popup()?.nativeElement.contains(event.relatedTarget as Node | null)) {
       this.open.set(false);

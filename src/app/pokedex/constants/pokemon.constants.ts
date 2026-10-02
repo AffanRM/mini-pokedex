@@ -1,4 +1,5 @@
 export const CATALOG_BATCH_SIZE = 100;
+export const SEARCH_CACHE_LIMIT = 50;
 export const PAGE_SIZES = [10, 25, 50] as const;
 export const STAT_NAMES = [
   'hp',

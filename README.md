@@ -3,10 +3,10 @@
 Angular 21 frontend assessment using GraphQL, custom RxJS stores and Angular Signals.
 
 **Current status:** all required features and bonus option 4 are implemented.
-The final implementation is published through `0dd1a7b`, including isolated chart
-tests and stable team refresh layout. All three audit commits passed GitHub CI.
-The final submission review also passed a fresh `npm ci`, all 55 tests, lint,
-formatting, production build and `ng serve` startup on 2 October 2026.
+The reviewed implementation is published through `eccc8e7` with passing GitHub CI.
+A subsequent user check found a consecutive-pick focus bug. The picker now reopens
+on typing and caches successful repeat searches; this correction is local until
+the owner publishes it using [the Git workflow](docs/git-workflow.md).
 Track verified requirements in
 [the assessment checklist](docs/assessment-checklist.md) and build stages in
 [the implementation plan](docs/implementation-plan.md).
@@ -55,7 +55,8 @@ npm run build
 configuration files. Tests cover GraphQL errors/retry/timeout/cancellation,
 catalog caching, selectors, optimistic rollback/concurrency, form validators,
 table interactions, detail states, chart lifecycle, team workflows, persistence
-and component teardown. Currently 55 tests in 17 files pass.
+and component teardown. The current suite contains 58 tests in 17 files,
+including uninterrupted consecutive picks and successful-search caching.
 Vitest suites are isolated to prevent their Chart.js module mocks from interfering.
 The published checkpoint was also verified with a fresh clone and `npm ci`.
 The final source snapshot is checked separately with the updated lockfile.
@@ -97,7 +98,13 @@ never persisted, and deleted/missing selections fall back to an available team.
 
 The reactive builder requires a unique name of 3–30 normalized characters and
 1–6 different Pokémon. Name checks and autocomplete debounce for 300ms. The
-picker supports arrow keys, Enter, Escape and removable chips. Validation appears
+picker supports arrow keys, Enter, Escape and removable chips. After a pick,
+typing another name reopens suggestions without leaving the focused field.
+At six picks, inline guidance leaves all removal buttons accessible.
+Successful queries (including empty results) are cached by normalized text in a
+bounded 50-query cache; errors are never cached. A new uncached search still
+depends on public API latency until the complete catalog is loaded. The 300ms
+debounce remains in both paths. Validation appears
 after interaction or a submit attempt. New teams use Ash Ketchum's trainer ID.
 
 A new team appears immediately while saving. Failures roll it back and retain

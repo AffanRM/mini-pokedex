@@ -79,6 +79,34 @@ describe('PokemonPickerComponent', () => {
     fixture.detectChanges();
     expect(fixture.nativeElement.textContent).toContain('No available Pokémon');
   });
+  it('reopens suggestions when typing the next pick without leaving the focused input', async () => {
+    search.mockImplementation((query: string) =>
+      of([pokemonFixture(query === 'ivy' ? 2 : 1, query === 'ivy' ? 'ivysaur' : 'bulbasaur')]),
+    );
+    const input = fixture.nativeElement.querySelector('input') as HTMLInputElement;
+    input.focus();
+    input.value = 'bul';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    await vi.advanceTimersByTimeAsync(300);
+    fixture.detectChanges();
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    fixture.componentRef.setInput('selected', [pokemonFixture(1, 'bulbasaur')]);
+    fixture.detectChanges();
+    expect(document.activeElement).toBe(input);
+    expect(fixture.componentInstance.open()).toBe(false);
+
+    input.value = 'ivy';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    fixture.detectChanges();
+    expect(input.getAttribute('aria-expanded')).toBe('true');
+    expect(fixture.nativeElement.textContent).toContain('Finding Pokémon');
+    await vi.advanceTimersByTimeAsync(300);
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('[role="option"]')?.textContent).toContain(
+      'Ivysaur',
+    );
+    expect(document.activeElement).toBe(input);
+  });
   it('rejects seventh picks and cancels unfinished typeahead on teardown', async () => {
     const response = new Subject<readonly PokemonModel[]>();
     search.mockReturnValueOnce(response);
@@ -88,7 +116,13 @@ describe('PokemonPickerComponent', () => {
       'selected',
       Array.from({ length: 6 }, (_, index) => pokemonFixture(index + 1)),
     );
+    fixture.componentInstance.onFocus();
     fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('input')?.getAttribute('aria-expanded')).toBe(
+      'false',
+    );
+    expect(fixture.nativeElement.querySelector('.pokemon-picker__dropdown')).toBeNull();
+    expect(fixture.nativeElement.textContent).toContain('Your six slots are full.');
     const changed = vi.fn();
     fixture.componentInstance.selectedChanged.subscribe(changed);
     fixture.componentInstance.pick(pokemonFixture(7));

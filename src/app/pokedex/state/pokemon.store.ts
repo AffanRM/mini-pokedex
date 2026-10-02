@@ -22,6 +22,7 @@ import { SEARCH_DEBOUNCE_MS } from '../../common/constants/api.constants';
 import { AsyncStateModel } from '../../common/models/async-state.model';
 import { errorMessage } from '../../common/utils/error-message.util';
 import { ApiError } from '../../core/graphql.service';
+import { SEARCH_CACHE_LIMIT } from '../constants/pokemon.constants';
 import { PokemonControlsModel, PokemonDetailModel, PokemonModel } from '../models/pokemon.model';
 import { PokemonStateModel } from '../models/pokemon-state.model';
 import { PokemonApiService } from '../services/pokemon-api.service';
@@ -45,6 +46,7 @@ export class PokemonStore {
     pageSize: 10,
   });
   private catalogRequest?: Observable<readonly PokemonModel[]>;
+  private readonly searchResults = new Map<string, readonly PokemonModel[]>();
   private readonly details = new Map<number, PokemonDetailModel>();
   private readonly detailRequests = new Map<number, Observable<PokemonDetailModel | null>>();
 
@@ -63,6 +65,7 @@ export class PokemonStore {
         return this.api.getCatalog$();
       }).pipe(
         tap((data) => {
+          this.searchResults.clear();
           this.cache(data);
           this.patch({ status: 'success', data, error: null });
         }),
@@ -95,7 +98,7 @@ export class PokemonStore {
     });
   }
 
-  /** Debounce and cancel typeahead requests, keeping errors recoverable within the stream. */
+  /** Debounce/cancel typeahead, reuse successful queries and keep errors recoverable. */
   search$(
     queries$: Observable<string>,
     retries$: Observable<void> = EMPTY,
@@ -122,9 +125,19 @@ export class PokemonStore {
                 .slice(0, 20),
             );
           }
+          const cached = this.searchResults.get(query);
+          if (cached !== undefined) return of(cached);
           return this.api.search$(query);
         }).pipe(
-          tap((data) => this.cache(data)),
+          tap((data) => {
+            this.cache(data);
+            this.searchResults.delete(query);
+            this.searchResults.set(query, data);
+            if (this.searchResults.size > SEARCH_CACHE_LIMIT) {
+              const oldest = this.searchResults.keys().next().value;
+              if (oldest !== undefined) this.searchResults.delete(oldest);
+            }
+          }),
           map((data): AsyncStateModel<readonly PokemonModel[]> => ({
             status: 'success',
             data,

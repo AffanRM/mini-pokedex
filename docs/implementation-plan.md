@@ -15,6 +15,11 @@ audit commits passed CI, and a fresh local install/check passed on 2 October 202
 The owner publishes the final documentation record and emails the repository.
 See [validation.md](validation.md).
 
+The documentation record is now published at `eccc8e7` with passing CI. A later
+user check exposed a consecutive-picker focus bug missed by the earlier review.
+The local correction reopens suggestions on typing and caches successful repeat
+queries; owner publication and the correction's CI check remain before submission.
+
 1. **Foundation:** inspect the brief, validate tools, scaffold Angular 21,
    install dependencies, enforce style/commits, verify baseline, publish repo.
 2. **Data layer:** typed GraphQL transport, bounded retry, mock schema validation,

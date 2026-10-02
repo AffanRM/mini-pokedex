@@ -122,11 +122,19 @@ Open Teams online. The initial list should have the three supplied teams.
 5. Try `Kanto Starters`, then `  kanto   starters  `. Both should fail uniqueness
    after the debounced check. A valid new name should finish checking normally.
 6. Search `bulba` in the picker. After the debounce, choose Bulbasaur. Check its
-   removable chip. Search again: an already selected Pokémon should be excluded.
+   removable chip. Without clicking away or refocusing, type `ivysaur`, pick it,
+   then type `venusaur`. Suggestions must reopen and update each time. Search
+   again: an already selected Pokémon should be excluded. Try Escape then type
+   another name; typing should reopen suggestions. Repeat a previously successful
+   query to check cached results after the 300ms debounce. New queries on a fresh
+   Teams-only session can additionally wait for the public API; keep focus in the
+   field and confirm loading changes to results without another click.
 7. Quickly change a query from `bulba` to `char`. Stale results should not become
    selectable for the newer query. Try `zzzz-no-pokemon` for an empty dropdown.
 8. Add six different Pokémon. A seventh pick must be blocked. Remove one chip
-   and check that another pick is allowed. Use arrow keys, Enter and Escape in
+   directly with the pointer while the search field has focus; full-slot guidance
+   must not cover any removal button. Check that another pick is allowed.
+   Use arrow keys, Enter and Escape in
    the picker, and use Tab/Enter to reach and operate removal buttons.
 9. Use a disposable name such as `Manual QA Squad`, with one or more members,
    and submit. The team appears immediately with Saving…; success shows a toast,

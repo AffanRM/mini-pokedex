@@ -4,6 +4,10 @@ Status: all required features and bonus option 4 implemented; local checks and
 browser review complete. Final implementation publication verified at `0dd1a7b`.
 Suite isolation and refresh-layout corrections passed all three GitHub CI runs.
 Fresh dependency installation and the full local check passed on 2 October 2026.
+Published documentation is at `eccc8e7` with passing CI. A subsequent user check
+found uninterrupted consecutive typing did not reopen the picker after a pick.
+The local fix and search cache await owner publication; do not submit the earlier
+revision as containing this correction.
 An unchecked item is not yet verified. Detailed evidence: [validation.md](validation.md).
 
 ## Evaluation and scope
@@ -173,8 +177,17 @@ Keep the actual receipt deadline and effort budget in mind when submitting.
   OnPush, standalone and signal communication. Icons and BEM/token styles follow
   the guide. No assessment PDFs, local QA artifacts or environment files are tracked.
 - Patched the build-worker dependency; dependency audit has zero findings.
-- The current final source has 55 tests in 17 files, including retained lineup
+- The submission-review source had 55 tests in 17 files, including retained lineup
   during refresh/failure/recovery. Browser geometry checks confirmed stable
   mobile list/member positions. Detailed startup/testing: [run-and-test.md](run-and-test.md).
 - Audit corrections are published and remote CI is verified; only the final
   documentation record and the owner's email submission remain.
+
+## Consecutive picker correction — 3 October 2026
+
+- A DOM regression reproduced the closed dropdown while the input retained focus.
+- Native input events now reopen suggestions after picking, removing or Escape.
+- Successful normalized search results are cached (maximum 50 queries); errors
+  and partial entity-cache matches cannot masquerade as complete search results.
+- Three additional regressions bring the suite to 58 tests in 17 files.
+- [ ] Owner publishes the picker correction and verifies its new CI result.

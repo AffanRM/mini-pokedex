@@ -82,6 +82,40 @@ describe('PokemonStore', () => {
     await firstValueFrom(store.getDetail$(1));
     expect(api.getDetail$).toHaveBeenCalledTimes(2);
   });
+  it('reuses complete normalized search results, including empty matches, without another API call', () => {
+    vi.useFakeTimers();
+    api.search$.mockImplementation((query: string) =>
+      of(query === 'bul' ? [pokemonFixture(1, 'bulbasaur')] : []),
+    );
+    const queries = new Subject<string>();
+    const values: AsyncStateModel<readonly PokemonModel[]>[] = [];
+    const subscription = store.search$(queries).subscribe((value) => values.push(value));
+    for (const query of ['bul', 'no-match', ' BUL ', 'NO-MATCH']) {
+      queries.next(query);
+      vi.advanceTimersByTime(SEARCH_DEBOUNCE_MS);
+    }
+    expect(api.search$.mock.calls.map(([query]) => query)).toEqual(['bul', 'no-match']);
+    expect(values.at(-1)).toEqual({ status: 'success', data: [], error: null });
+    subscription.unsubscribe();
+  });
+
+  it('does not cache failed searches or assume a cached subset is a complete broader result', () => {
+    vi.useFakeTimers();
+    api.search$
+      .mockReturnValueOnce(throwError(() => new ApiError('Offline')))
+      .mockReturnValueOnce(of([pokemonFixture(1, 'bulbasaur')]))
+      .mockReturnValueOnce(of([pokemonFixture(1, 'bulbasaur'), pokemonFixture(2, 'ivysaur')]));
+    const queries = new Subject<string>();
+    const values: AsyncStateModel<readonly PokemonModel[]>[] = [];
+    const subscription = store.search$(queries).subscribe((value) => values.push(value));
+    for (const query of ['b', 'bul', 'b']) {
+      queries.next(query);
+      vi.advanceTimersByTime(SEARCH_DEBOUNCE_MS);
+    }
+    expect(api.search$.mock.calls.map(([query]) => query)).toEqual(['b', 'bul', 'b']);
+    expect(values.at(-1)?.data).toHaveLength(2);
+    subscription.unsubscribe();
+  });
 
   it('retries the exact failed autocomplete query without requiring a text change', () => {
     vi.useFakeTimers();
