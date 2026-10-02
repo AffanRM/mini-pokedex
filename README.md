@@ -3,9 +3,10 @@
 Angular 21 frontend assessment using GraphQL, custom RxJS stores and Angular Signals.
 
 **Current status:** all required features and bonus option 4 are implemented.
-Features are published through `1ce5d53`. The publication audit reproduced a CI
-mock-isolation failure and corrected it locally, along with stable team refresh
-layout. These corrections still need the owner's manual commits/push and CI check.
+The final implementation is published through `0dd1a7b`, including isolated chart
+tests and stable team refresh layout. All three audit commits passed GitHub CI.
+The final submission review also passed a fresh `npm ci`, all 55 tests, lint,
+formatting, production build and `ng serve` startup on 2 October 2026.
 Track verified requirements in
 [the assessment checklist](docs/assessment-checklist.md) and build stages in
 [the implementation plan](docs/implementation-plan.md).

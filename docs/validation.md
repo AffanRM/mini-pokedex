@@ -5,6 +5,15 @@ https://github.com/AffanRM/mini-pokedex.
 
 ## Publication verification
 
+The final implementation is now published at
+`0dd1a7b064e8a49570ba0376242ba24fb1217420`. Local main matches public GitHub main,
+and the working tree was clean at the start of the final submission review.
+All three audit commits (`6accdd4`, `edf226d`, `0dd1a7b`) passed CI. The
+[latest verified run](https://github.com/AffanRM/mini-pokedex/actions/runs/37004549935)
+successfully installed dependencies and ran lint, formatting, tests and build.
+
+Historical issue and correction:
+
 The owner correctly published all four final checkpoint commits: `b9363fe`,
 `62d51c3`, `10bc7a5`, and `1ce5d53`. At the start of the publication audit the
 working tree was clean and local main matched GitHub at
@@ -18,16 +27,18 @@ to `isolate: false`. A one-worker shuffled run reproduced the exact failure:
 the radar suite saw the other suite's mock instead of its own recorded instances.
 Enabling `isolate: true` in `vitest.config.ts`, referenced by `angular.json`,
 made that same test order pass. All lifecycle assertions remain intact.
-The correction is local until the owner commits/pushes it; newest remote CI
-still needs verification afterward.
+The owner has published the correction; its remote CI result is verified above.
 
 ## Reproducibility and conventions
 
 - A fresh clone of the public checkpoint installed with `npm ci` and passed lint,
   formatting, all 53 checkpoint tests and production build.
-- Final source/lockfile validation passes lint, formatting, 55 tests in 17 files
-  and production build. The final snapshot is also copied into the clean-install
-  verification directory for a fresh dependency install and identical checks.
+- The final submission review performed `npm ci` in the project, then passed
+  lint, formatting, 55 tests in 17 files and production build. Production initial
+  bundles total 283.52 kB, below the configured warning budget; no build warnings.
+- The first reinstall attempt encountered Windows' esbuild file lock. Stopping
+  the verified project servers released it; installation succeeded and both
+  `ng serve --host 127.0.0.1` and the port-4000 mock restarted successfully.
 - Piscina 5.3.2 replaces Angular build's pinned vulnerable worker version through
   a narrowly scoped npm override. The build, serve and tests work with it; audit
   reports zero vulnerabilities at review time.
@@ -38,6 +49,22 @@ still needs verification afterward.
   configuration are ignored. No commit or push was performed by the coding agent.
 
 ## Browser checks
+
+The final review retested the published implementation through the real UI:
+normalized duplicate-name rejection, zero-result autocomplete, keyboard picking,
+creation and successful notification, failed deletion rollback, failed creation
+rollback with retained choices, failed refresh with retained lineup, restarted
+mock/list retry, successful retry save, selected-team reload persistence and
+successful deletion. Disposable teams were removed; three fixture teams remain.
+
+The public catalog again loaded 1,302 records. All seven stat columns sorted
+correctly in both directions; 10/25/50 page sizes, next-page navigation, combined
+name/type filtering, empty results and Clear filters passed. Bulbasaur displayed
+0.7 m, 6.9 kg, total 318, English abilities and a nonzero-size chart. Escape
+returned focus to its row button. At a 390px viewport, both pages had equal
+document/client widths (375px), with horizontal scrolling confined to the table.
+Six member cards rendered and no runtime errors were captured in the final QA tab.
+The viewport override was reset and the mock/server were left running.
 
 | Area                    | Verified behavior                                                                                                                  |
 | ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
@@ -79,8 +106,10 @@ keyboard/responsive review, not a formal screen-reader or WCAG certification.
 
 ## Remaining delivery steps
 
-The repository owner runs only the new audit commit/push commands in
-[git-workflow.md](git-workflow.md), checks the latest CI result, and shares the
-public repository URL. Detailed startup and testing instructions are in
+The repository owner publishes only the final documentation record using
+[git-workflow.md](git-workflow.md), verifies that commit's CI result, and emails
+the public repository URL. No functional source changes are pending. Read access
+is already available publicly; the email does not require granting write access.
+Detailed startup and testing instructions are in
 [run-and-test.md](run-and-test.md). No additional bonus options are planned.
 The mock remains intentionally ephemeral: restart resets the supplied fixture.

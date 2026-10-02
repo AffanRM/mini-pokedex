@@ -1,72 +1,43 @@
-# Manual Git workflow
+# Final manual Git workflow
 
-The developer (AffanRM) runs every commit/push. The coding agent does not commit,
-push or rewrite history.
+The owner runs every commit/push. The coding agent does not stage, commit, push
+or rewrite history.
 
-## Your previous commands were correct
+## Verified publication
 
-All four final checkpoint commits are published, in order:
+All three audit commits are correctly published and passed CI:
 
-| Commit    | Subject                                                                | CI                   |
-| --------- | ---------------------------------------------------------------------- | -------------------- |
-| `b9363fe` | fix(resilience): keep picker retries visible and flush radar rendering | Passed               |
-| `62d51c3` | chore(tooling): patch build worker and refresh ci actions              | Passed               |
-| `10bc7a5` | feat(common): add skeleton shimmer and mutation notifications          | Passed               |
-| `1ce5d53` | docs(readme): record final validation and submission steps             | Failed in radar test |
+| Commit    | Subject                                                     | CI     |
+| --------- | ----------------------------------------------------------- | ------ |
+| `6accdd4` | test(tooling): isolate chart mocks across test suites       | Passed |
+| `edf226d` | fix(teams): preserve lineup layout during refresh           | Passed |
+| `0dd1a7b` | docs(readme): add run and test guide with publication audit | Passed |
 
-Local main matches public GitHub at `1ce5d53`; the working tree was clean before
-this audit. The failure is not a problem with the commands you entered. Angular
-shared the detail/radar suites' different Chart.js mocks between files. The same
-failure was reproduced locally with one worker and fixed by enabling test-suite
-isolation. The audit also improved layout stability when refreshing teams.
+Local main matches public GitHub main. The latest verified run is
+https://github.com/AffanRM/mini-pokedex/actions/runs/37004549935.
+Do not repeat any previous commit blocks.
 
-Do not repeat the previous four commit blocks. Run only the new blocks below.
+## Publish the final documentation record
 
-## Publish the audit corrections
+The final review changed only README/documentation to record verified publication
+and fresh local checks. No functional source changes are pending.
 
 ```powershell
 Set-Location 'C:\Users\affan\OneDrive\Desktop\BuzzerFan\Task'
-npm run check
+npm run format:check
 git status --short
-```
-
-Review each staged list before committing. First publish the test isolation fix:
-
-```powershell
-git add angular.json vitest.config.ts src/app/pokedex/components/stat-radar/stat-radar.component.spec.ts
-git diff --cached --stat
-git commit -m "test(tooling): isolate chart mocks across test suites"
-git push
-```
-
-Then publish the team refresh/layout correction and its regression test:
-
-```powershell
-git add src/app/teams
-git diff --cached --stat
-git commit -m "fix(teams): preserve lineup layout during refresh"
-git push
-```
-
-Finally publish updated validation and the detailed run-and-test guide:
-
-```powershell
 git add README.md docs
 git diff --cached --stat
-git commit -m "docs(readme): add run and test guide with publication audit"
+git commit -m "docs(readme): finalize submission validation record"
 git push
 git status
-git log -7 --oneline
 ```
 
-The final working tree should be clean. Husky and commitlint remain enabled;
-fix any reported check failure before continuing. PDFs and all `tmp/` QA files
-remain ignored. Only bonus option 4 is included.
+Check https://github.com/AffanRM/mini-pokedex/actions and wait for the newest run,
+matching this documentation commit, to pass. Then reply to the original task
+email with https://github.com/AffanRM/mini-pokedex. The repository is public and
+already grants read/clone access; write access is unnecessary for assessment.
 
-Open https://github.com/AffanRM/mini-pokedex/actions and confirm that the newest
-run matches your final commit and is green. The audit fixes cannot be marked
-remotely verified until you publish them. Share https://github.com/AffanRM/mini-pokedex
-after that check passes.
-
-Use [run-and-test.md](run-and-test.md) for detailed startup, automated checks,
-manual feature tests, offline/throttled testing, rollback, keyboard and mobile QA.
+Husky and commitlint remain enabled. The working tree should be clean after the
+commit. Only bonus option 4 is included. Assessment PDFs and temporary QA files
+remain ignored. Detailed startup and testing: [run-and-test.md](run-and-test.md).

@@ -1,9 +1,9 @@
 # Mini Pokedex assessment checklist
 
 Status: all required features and bonus option 4 implemented; local checks and
-browser review complete. Final feature publication verified at `1ce5d53`; its CI
-exposed a shared Chart.js mock collision. Suite isolation and refresh-layout
-corrections are verified locally and await manual publication and new CI.
+browser review complete. Final implementation publication verified at `0dd1a7b`.
+Suite isolation and refresh-layout corrections passed all three GitHub CI runs.
+Fresh dependency installation and the full local check passed on 2 October 2026.
 An unchecked item is not yet verified. Detailed evidence: [validation.md](validation.md).
 
 ## Evaluation and scope
@@ -122,9 +122,10 @@ uncached requests must not silently display an empty or stale success state.
 - [x] README accurately states mock persistence and known limitations.
 - [x] Clean checkout succeeds with npm ci and documented checks.
 - [x] Public GitHub repository has incremental Conventional Commits.
-- [x] No more than ONE optional bonus; only within the ten-hour effort budget.
+- [x] No more than ONE optional bonus: option 4 only.
+- [ ] Owner confirms the actual effort budget and three-day receipt deadline.
 - [x] Owner publishes the final feature/bonus/documentation commits through `1ce5d53`.
-- [ ] Owner publishes the audit corrections and verifies the newest CI run.
+- [x] Owner publishes the audit corrections and the newest CI run passes at `0dd1a7b`.
 
 The only implemented bonus is skeleton shimmer and micro-animations (option 4).
 It was added after required resilience checks passed. No other bonus is included.
@@ -175,4 +176,5 @@ Keep the actual receipt deadline and effort budget in mind when submitting.
 - The current final source has 55 tests in 17 files, including retained lineup
   during refresh/failure/recovery. Browser geometry checks confirmed stable
   mobile list/member positions. Detailed startup/testing: [run-and-test.md](run-and-test.md).
-- Publishing the audit corrections and remote CI verification remain owner-operated steps.
+- Audit corrections are published and remote CI is verified; only the final
+  documentation record and the owner's email submission remain.
