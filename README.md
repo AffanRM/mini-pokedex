@@ -3,8 +3,9 @@
 Angular 21 frontend assessment using GraphQL, custom RxJS stores and Angular Signals.
 
 **Current status:** all required features and bonus option 4 are implemented.
-Local validation and browser resilience review are complete. The owner still
-needs to publish the final commits and confirm their GitHub Actions result.
+Features are published through `1ce5d53`. The publication audit reproduced a CI
+mock-isolation failure and corrected it locally, along with stable team refresh
+layout. These corrections still need the owner's manual commits/push and CI check.
 Track verified requirements in
 [the assessment checklist](docs/assessment-checklist.md) and build stages in
 [the implementation plan](docs/implementation-plan.md).
@@ -53,9 +54,12 @@ npm run build
 configuration files. Tests cover GraphQL errors/retry/timeout/cancellation,
 catalog caching, selectors, optimistic rollback/concurrency, form validators,
 table interactions, detail states, chart lifecycle, team workflows, persistence
-and component teardown. Currently 54 tests in 17 files pass.
+and component teardown. Currently 55 tests in 17 files pass.
+Vitest suites are isolated to prevent their Chart.js module mocks from interfering.
 The published checkpoint was also verified with a fresh clone and `npm ci`.
 The final source snapshot is checked separately with the updated lockfile.
+For detailed PowerShell startup commands and browser testing scenarios, see
+[the run-and-test guide](docs/run-and-test.md).
 
 The build-worker override pins Piscina 5.3.2 to address
 [GHSA-67c8-pqhq-4rmx](https://github.com/advisories/GHSA-67c8-pqhq-4rmx)
@@ -101,6 +105,8 @@ the saved team. Deletions are optimistic, with rollback and Retry deletion on
 failure. List and member-load failures have independent retry actions. Refresh
 is disabled while mutations are pending. Multiple independent deletions can
 finish concurrently; repeated form submissions are guarded.
+Refreshing the team list retains the selected lineup while loading or after a
+failed refresh. Reserved list/builder space avoids shifting the existing lineup.
 
 Live browser review verified creation/deletion, selected-team reload persistence,
 duplicate-name checks, keyboard picking, empty autocomplete, desktop/mobile

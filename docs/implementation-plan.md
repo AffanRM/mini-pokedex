@@ -9,9 +9,10 @@ commit/push commands manually. Prepare changes and provide commands at each
 verified checkpoint; do not commit or push on the user's behalf.
 
 Current checkpoint: stages 1–5 are published at
-https://github.com/AffanRM/mini-pokedex through `cc7e622`; its CI passed.
-Stage 6 and bonus option 4 are complete locally. Final manual publication and
-the newest GitHub Actions check remain. See [validation.md](validation.md).
+https://github.com/AffanRM/mini-pokedex through `1ce5d53`, including bonus option 4.
+Publication audit found a reproducible shared-mock CI failure and refresh layout
+shifts. Both are corrected locally. Manual publication of audit fixes and the
+newest GitHub Actions check remain. See [validation.md](validation.md).
 
 1. **Foundation:** inspect the brief, validate tools, scaffold Angular 21,
    install dependencies, enforce style/commits, verify baseline, publish repo.

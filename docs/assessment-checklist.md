@@ -1,8 +1,9 @@
 # Mini Pokedex assessment checklist
 
 Status: all required features and bonus option 4 implemented; local checks and
-browser review complete. Teams publication verified at `cc7e622`; final changes
-await the owner's manual commits/push and newest GitHub Actions verification.
+browser review complete. Final feature publication verified at `1ce5d53`; its CI
+exposed a shared Chart.js mock collision. Suite isolation and refresh-layout
+corrections are verified locally and await manual publication and new CI.
 An unchecked item is not yet verified. Detailed evidence: [validation.md](validation.md).
 
 ## Evaluation and scope
@@ -122,7 +123,8 @@ uncached requests must not silently display an empty or stale success state.
 - [x] Clean checkout succeeds with npm ci and documented checks.
 - [x] Public GitHub repository has incremental Conventional Commits.
 - [x] No more than ONE optional bonus; only within the ten-hour effort budget.
-- [ ] Owner publishes final commits and verifies their newest CI run.
+- [x] Owner publishes the final feature/bonus/documentation commits through `1ce5d53`.
+- [ ] Owner publishes the audit corrections and verifies the newest CI run.
 
 The only implemented bonus is skeleton shimmer and micro-animations (option 4).
 It was added after required resilience checks passed. No other bonus is included.
@@ -161,13 +163,16 @@ Keep the actual receipt deadline and effort budget in mind when submitting.
   loading, errors and recovery through the real browser UI. This used an ignored
   QA clone/proxy, rather than changing OS connectivity or the production API URL.
 - Browser review found and fixed focus loss during picker Retry; the regression
-  checks loading visibility, focus and recovery. Radar tests explicitly flush
-  Angular render callbacks to address the intermittent CI timing failure.
+  checks loading visibility, focus and recovery. The initial render-flush change
+  was insufficient: final publication exposed shared Chart.js mock interference.
+  The same failure was reproduced with one worker and fixed with suite isolation.
 - Bonus option 4 verified: shimmer computed styles, 45ms card staggering,
   success/error toasts, keyboard dismissal and 390px mobile layout.
 - Public store/service methods have JSDoc; all components use separate templates,
   OnPush, standalone and signal communication. Icons and BEM/token styles follow
   the guide. No assessment PDFs, local QA artifacts or environment files are tracked.
 - Patched the build-worker dependency; dependency audit has zero findings.
-- The current final source has 54 tests in 17 files. Publishing and remote CI
-  verification remain the final owner-operated steps.
+- The current final source has 55 tests in 17 files, including retained lineup
+  during refresh/failure/recovery. Browser geometry checks confirmed stable
+  mobile list/member positions. Detailed startup/testing: [run-and-test.md](run-and-test.md).
+- Publishing the audit corrections and remote CI verification remain owner-operated steps.
