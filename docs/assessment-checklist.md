@@ -6,8 +6,8 @@ Suite isolation and refresh-layout corrections passed all three GitHub CI runs.
 Fresh dependency installation and the full local check passed on 2 October 2026.
 Published documentation is at `eccc8e7` with passing CI. A subsequent user check
 found uninterrupted consecutive typing did not reopen the picker after a pick.
-The local fix and search cache await owner publication; do not submit the earlier
-revision as containing this correction.
+The fix and search cache are published at `93c22ee`, with passing GitHub CI.
+The final local check on 3 October passed 58 tests, lint, formatting and build.
 An unchecked item is not yet verified. Detailed evidence: [validation.md](validation.md).
 
 ## Evaluation and scope
@@ -190,4 +190,4 @@ Keep the actual receipt deadline and effort budget in mind when submitting.
 - Successful normalized search results are cached (maximum 50 queries); errors
   and partial entity-cache matches cannot masquerade as complete search results.
 - Three additional regressions bring the suite to 58 tests in 17 files.
-- [ ] Owner publishes the picker correction and verifies its new CI result.
+- [x] Owner published the picker correction at `93c22ee`; its GitHub CI passed.

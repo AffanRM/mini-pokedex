@@ -1,34 +1,35 @@
-# Manual picker correction workflow
+# Final documentation handoff
 
 The owner runs every commit/push. The coding agent does not stage, commit, push
-or rewrite history. Do not repeat any earlier commit blocks.
+or rewrite history. Do not repeat earlier commit blocks.
 
-## Why a new correction is needed
+## Verified implementation
 
-The published `eccc8e7` passed CI, but a later user check exposed a real picker
-bug: picking kept input focus while closing suggestions, and typing another name
-did not reopen them. A new DOM regression reproduced this failure. The local fix
-opens suggestions on typing and caches successful repeat searches with a 50-query
-bound. It preserves the required debounce, cancellation and error/retry behavior.
-Full-slot guidance is also inline so it cannot cover the chip removal buttons.
+Your picker correction is published at `93c22ee`; local HEAD and remote main
+matched, and its GitHub CI passed. The final local check passed lint, formatting,
+58 tests in 17 files and production build. No further application changes were
+needed in the final review.
 
-## Publish the verified correction
+The remaining changes only correct the run instructions' test count and record
+the verified publication and final browser checks in the documentation.
+
+## Publish the documentation
 
 ```powershell
 Set-Location 'C:\Users\affan\OneDrive\Desktop\BuzzerFan\Task'
-npm run check
+npm run format:check
 git status --short
-git add src/app/teams/components/pokemon-picker src/app/pokedex/constants/pokemon.constants.ts src/app/pokedex/state/pokemon.store.ts src/app/pokedex/state/pokemon.store.spec.ts README.md docs
+git add README.md docs
 git diff --cached --stat
-git commit -m "fix(teams): reopen picker while typing and cache repeat searches"
+git commit -m "docs(readme): record final published verification"
 git push
 git status
 ```
 
-Check https://github.com/AffanRM/mini-pokedex/actions and wait for the newest run,
-matching this correction commit, to pass. Then send the assessment email with
-https://github.com/AffanRM/mini-pokedex. Use the updated test count of 58 in the
-email. Public read/clone access is already available.
+Open https://github.com/AffanRM/mini-pokedex/actions and wait for the newest run,
+matching this documentation commit, to pass. Then send the assessment email with
+https://github.com/AffanRM/mini-pokedex. Public read/clone access is available;
+no collaborator invitation is needed for reviewing a public repository.
 
 Husky and commitlint remain enabled. The working tree should be clean after the
 commit. Only bonus option 4 is included. Assessment PDFs and temporary QA files

@@ -33,8 +33,31 @@ without refocusing. At six picks the dropdown stayed collapsed, hit-testing
 confirmed the remove button was uncovered, and a pointer click reduced the count
 to five. New suggestions then opened normally. QA choices were never saved and
 the page was reloaded afterward; the three backend fixture teams remain intact.
-The correction remains local until the owner runs [git-workflow.md](git-workflow.md)
-and verifies the correction's latest GitHub CI.
+The owner published the correction at `93c22ee`. Local HEAD and actual remote
+main matched, and [its GitHub CI](https://github.com/AffanRM/mini-pokedex/actions/runs/37066947767)
+passed. A fresh full local check on 3 October passed all 58 tests in 17 files,
+lint, formatting and production build.
+
+The final browser review also verified normalized duplicate-name rejection,
+mouse selection followed immediately by typing, keyboard selection, duplicate
+exclusion, chip removal, successful creation, and saved-team/selection persistence
+after reload. Stopping the local mock produced save rollback with retained form
+choices; restarting it and explicitly retrying created exactly one team. A failed
+deletion restored its team and showed Retry deletion. A subsequent failed list
+refresh retained the selected lineup and disabled the builder; restarting the
+mock and retrying recovered the original fixtures. Disposable QA teams were
+removed or cleared by the documented mock restart. No production source changed
+during this final review.
+
+The table review verified both directions of all seven stat sorts, the 10/25/50
+page controls, later-page reset after combined name/type filtering, meaningful
+empty results and Clear filters recovery. Bulbasaur's live profile showed 0.7m,
+6.9kg, total 318 and both English abilities. Next changed the profile to Ivysaur
+and the radar's accessible identity and six stats updated; Escape returned focus
+to the originating row button. Six consecutive keyboard picks retained search
+focus, a seventh pick was blocked, and pointer removal at the limit reduced the
+count to five. The final form was reloaded to clear unsaved picks, the mock was
+left running with its original three fixtures, and the browser error log was empty.
 
 ## Publication verification
 

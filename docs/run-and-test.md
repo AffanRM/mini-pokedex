@@ -59,7 +59,7 @@ Set-Location 'C:\Users\affan\OneDrive\Desktop\BuzzerFan\Task'
 npm run check
 ```
 
-Expected: lint passes, Prettier passes, **55 tests in 17 files** pass, and the
+Expected: lint passes, Prettier passes, **58 tests in 17 files** pass, and the
 production build finishes without errors or budget warnings. These tests mock
 HTTP/data dependencies, so they do not require the live APIs.
 

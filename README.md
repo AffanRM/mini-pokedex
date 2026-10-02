@@ -3,10 +3,10 @@
 Angular 21 frontend assessment using GraphQL, custom RxJS stores and Angular Signals.
 
 **Current status:** all required features and bonus option 4 are implemented.
-The reviewed implementation is published through `eccc8e7` with passing GitHub CI.
-A subsequent user check found a consecutive-pick focus bug. The picker now reopens
-on typing and caches successful repeat searches; this correction is local until
-the owner publishes it using [the Git workflow](docs/git-workflow.md).
+The reviewed implementation, including the consecutive-pick correction, is
+published through `93c22ee` with passing GitHub CI. The picker reopens on typing,
+caches successful repeat searches, and keeps chip removal accessible at six picks.
+The final local check passed all 58 tests, lint, formatting and production build.
 Track verified requirements in
 [the assessment checklist](docs/assessment-checklist.md) and build stages in
 [the implementation plan](docs/implementation-plan.md).
