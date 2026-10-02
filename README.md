@@ -2,8 +2,9 @@
 
 Angular 21 frontend assessment using GraphQL, custom RxJS stores and Angular Signals.
 
-**Current status:** required Pokédex and Teams features are implemented and
-tested. Final submission review and the single planned bonus remain next.
+**Current status:** all required features and bonus option 4 are implemented.
+Local validation and browser resilience review are complete. The owner still
+needs to publish the final commits and confirm their GitHub Actions result.
 Track verified requirements in
 [the assessment checklist](docs/assessment-checklist.md) and build stages in
 [the implementation plan](docs/implementation-plan.md).
@@ -52,7 +53,14 @@ npm run build
 configuration files. Tests cover GraphQL errors/retry/timeout/cancellation,
 catalog caching, selectors, optimistic rollback/concurrency, form validators,
 table interactions, detail states, chart lifecycle, team workflows, persistence
-and component teardown. Currently 53 tests in 16 files pass.
+and component teardown. Currently 54 tests in 17 files pass.
+The published checkpoint was also verified with a fresh clone and `npm ci`.
+The final source snapshot is checked separately with the updated lockfile.
+
+The build-worker override pins Piscina 5.3.2 to address
+[GHSA-67c8-pqhq-4rmx](https://github.com/advisories/GHSA-67c8-pqhq-4rmx)
+while retaining Angular 21. `npm audit` reports zero vulnerabilities at review
+time; future advisory results can change. CI uses the current Node 24 actions.
 
 ## Browse the Pokédex
 
@@ -68,8 +76,11 @@ Loading preserves table/detail layout. Zero matches offer Clear filters; failed
 catalog/detail requests offer a friendly message and explicit Retry. Automated
 tests cover these states and cancellation when selection changes. Live browser
 checks cover search, filtering, paging, detail navigation, keyboard closing and
-desktop/mobile layouts. Full offline/throttled browser review remains a final
-submission task.
+desktop/mobile layouts. An isolated QA copy forwarded real GraphQL requests
+through a local fault proxy: delayed responses showed loading, injected outages
+showed friendly errors, and explicit retries recovered the catalog and details.
+The production app continues to call the public API directly. See
+[validation evidence](docs/validation.md) for the exact scope of these checks.
 
 ## Build and explore teams
 
@@ -94,7 +105,9 @@ finish concurrently; repeated form submissions are guarded.
 Live browser review verified creation/deletion, selected-team reload persistence,
 duplicate-name checks, keyboard picking, empty autocomplete, desktop/mobile
 layouts and saving while the mock was stopped, then retrying after restart.
-QA teams were removed. Restarting the mock resets all teams to the original
+QA teams were removed. Notifications report successful and failed mutations;
+dismissing a notification keeps inline recovery controls available.
+Restarting the mock resets all teams to the original
 fixture; it does not provide durable backend storage.
 
 ## Architecture
@@ -132,9 +145,10 @@ tokens; decorative SVG assets have fixed dimensions and accessible treatment.
 
 ## Bonus scope
 
-Only option 4, skeleton shimmer and micro-animations, is planned. No other bonus
-will be implemented. It remains deferred until the required resilience review
-passes and only if the assessment's ten-hour effort limit permits it.
+Only option 4 is implemented: table/detail skeleton shimmer, staggered member-card
+entry and dismissible success/error mutation toasts. Notifications remain until
+dismissed or replaced by the next mutation. Reduced-motion preferences disable
+CSS animations, and the radar uses a zero-duration update. No other bonus is included.
 
 ## Commits
 

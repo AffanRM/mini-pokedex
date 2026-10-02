@@ -1,27 +1,25 @@
 # Manual Git workflow
 
-The developer (AffanRM) runs these commands. The coding agent does not commit,
-push, or rewrite history on the developer's behalf.
+The developer (AffanRM) runs all commits/pushes. The coding agent prepares and
+verifies changes but does not commit, push or rewrite history.
 
-## Published checkpoints verified
+## Your previous commands were verified
 
-The public repository is https://github.com/AffanRM/mini-pokedex. Before the Teams
-work started, local main and GitHub both pointed to `3c8ebad`, with a clean working
-tree. The two new commits are correctly published:
+Local main and public GitHub both point to `cc7e622`, and the working tree was
+clean before this final stage. Both Teams commits are correctly published:
 
-- `3100d86` feat(pokedex): add sortable catalog and animated detail panel
-- `3c8ebad` docs(readme): record pokedex ui validation and progress
+- `8256f0a` feat(teams): add reactive builder and persistent team selection
+- `cc7e622` docs(readme): record team workflows and resilience checks
 
-All new GitHub Actions runs passed, including
-https://github.com/AffanRM/mini-pokedex/actions/runs/36910498306.
+The latest checkpoint CI passed:
+https://github.com/AffanRM/mini-pokedex/actions/runs/36916316774.
+The preceding run had an intermittent radar render-test failure; the fix is
+included below. Repository setup and earlier stages are complete.
+**Do not repeat the earlier Teams commit commands.**
 
-Published stages: foundation, API contracts, GraphQL services, stores/validators
-and Pokédex UI. Repository creation and remote
-setup are complete; do not repeat the earlier setup commands.
+## Final checkpoint commands
 
-## Current checkpoint: Teams UI
-
-Run these in PowerShell from the project directory:
+Run these blocks in order in PowerShell:
 
 ```powershell
 Set-Location 'C:\Users\affan\OneDrive\Desktop\BuzzerFan\Task'
@@ -29,43 +27,56 @@ npm run check
 git status --short
 ```
 
-Review the staged file list before committing:
+First commit the resilience fixes. Review each staged diff before committing:
 
 ```powershell
-git add src/app src/assets src/styles.scss
+git add src/app/pokedex/components/stat-radar/stat-radar.component.spec.ts src/app/teams/components/pokemon-picker
 git diff --cached --stat
-git commit -m "feat(teams): add reactive builder and persistent team selection"
+git commit -m "fix(resilience): keep picker retries visible and flush radar rendering"
 git push
 ```
 
-Then commit the updated documentation:
+Then commit the compatible build-worker patch and CI action updates:
+
+```powershell
+git add package.json package-lock.json .github/workflows/ci.yml
+git diff --cached --stat
+git commit -m "chore(tooling): patch build worker and refresh ci actions"
+git push
+```
+
+Commit the **single bonus option 4** (shimmer, card entry and mutation toasts):
+
+```powershell
+git add src/app src/styles.scss
+git diff --cached --stat
+git commit -m "feat(common): add skeleton shimmer and mutation notifications"
+git push
+```
+
+Finally commit the submission documentation:
 
 ```powershell
 git add README.md docs
 git diff --cached --stat
-git commit -m "docs(readme): record team workflows and resilience checks"
+git commit -m "docs(readme): record final validation and submission steps"
 git push
 git status
-git log -9 --oneline
+git log -6 --oneline
 ```
 
-The final state should show a clean working tree. The supplied assessment PDFs
-and `tmp/` verification artifacts remain ignored.
-Check the two new CI runs at https://github.com/AffanRM/mini-pokedex/actions.
+The final working tree should be clean. The assessment PDFs, verification clone,
+fault proxy and screenshots in `tmp/` remain ignored.
+Husky runs lint/format checks and commitlint checks scoped messages; fix any
+failure and keep the hooks enabled.
 
-## Validation evidence for this checkpoint
+## Delivery verification
 
-- `npm run check`: lint, formatting, all 53 tests and production build passed.
-- Live mock team creation/deletion, reload persistence, keyboard picking and
-  duplicate-name validation were verified in the browser.
-- A real mock outage caused save rollback while preserving the form; Retry saved
-  it after the server restarted. QA teams were removed.
-- Desktop/mobile layouts and computed stat/type summaries were reviewed.
-- Tests cover list/picker/member async states, retries, pending-submit guards,
-  storage failures, optimistic rollback and view teardown.
-- Final public-API offline/throttle QA, clean install and convention audit remain.
-  Only bonus option 4 is planned after the required review, within the time budget.
-  This checkpoint is not the full assessment submission.
+Open https://github.com/AffanRM/mini-pokedex/actions and confirm the newest
+run for the final documentation commit passes. New CI results cannot be verified
+until these commits are published. The app is locally complete; this is the
+remaining publication check before sharing https://github.com/AffanRM/mini-pokedex.
 
-Husky checks lint/format before each commit and commitlint checks the message.
-Do not bypass these checks; fix failures before proceeding.
+Validation evidence is recorded in [validation.md](validation.md): required
+features, controlled slow/outage UI checks, real mock save recovery, final
+54-test suite, clean installation, mobile/keyboard review and bonus option 4.

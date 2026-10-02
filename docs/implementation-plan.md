@@ -8,10 +8,10 @@ GitHub owner: AffanRM; intended repository: mini-pokedex. The user runs all
 commit/push commands manually. Prepare changes and provide commands at each
 verified checkpoint; do not commit or push on the user's behalf.
 
-Current checkpoint: stages 1–4 are published at
-https://github.com/AffanRM/mini-pokedex with passing CI through `3c8ebad`.
-Stage 5 is implemented and locally verified, ready for manual commits.
-Stage 6 is next; only bonus option 4 is planned afterward if time permits.
+Current checkpoint: stages 1–5 are published at
+https://github.com/AffanRM/mini-pokedex through `cc7e622`; its CI passed.
+Stage 6 and bonus option 4 are complete locally. Final manual publication and
+the newest GitHub Actions check remain. See [validation.md](validation.md).
 
 1. **Foundation:** inspect the brief, validate tools, scaffold Angular 21,
    install dependencies, enforce style/commits, verify baseline, publish repo.

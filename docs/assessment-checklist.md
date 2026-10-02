@@ -1,9 +1,9 @@
 # Mini Pokedex assessment checklist
 
-Status: required Pokédex/Teams features implemented and locally verified;
-published Pokédex commits and CI verified. Teams checkpoint publication, final
-submission review and the single optional bonus remain pending. An unchecked
-item is not yet verified.
+Status: all required features and bonus option 4 implemented; local checks and
+browser review complete. Teams publication verified at `cc7e622`; final changes
+await the owner's manual commits/push and newest GitHub Actions verification.
+An unchecked item is not yet verified. Detailed evidence: [validation.md](validation.md).
 
 ## Evaluation and scope
 
@@ -116,17 +116,17 @@ uncached requests must not silently display an empty or stale success state.
 - [x] Selector/computed test: combined filtering/sorting/paging or team totals.
 - [x] Validator test: asynchronous uniqueness and name normalization.
 - [x] Additional focused coverage for transport errors, cancellation and deletion rollback.
-- [ ] Browser review: full user flow, narrow screen, keyboard and failure/retry states.
+- [x] Browser review: full user flow, narrow screen, keyboard and failure/retry states.
 - [x] README documents install, ng serve, mock server, architecture and improvements.
 - [x] README accurately states mock persistence and known limitations.
-- [ ] Clean checkout succeeds with npm ci and documented checks.
+- [x] Clean checkout succeeds with npm ci and documented checks.
 - [x] Public GitHub repository has incremental Conventional Commits.
-- [ ] No more than ONE optional bonus; only within the ten-hour effort budget.
+- [x] No more than ONE optional bonus; only within the ten-hour effort budget.
+- [ ] Owner publishes final commits and verifies their newest CI run.
 
-The only planned bonus is skeleton shimmer and micro-animations (option 4).
-The user confirmed the at-most-one restriction. Implement it only after final
-required behavior/review passes and within the ten-hour effort limit. No bonus
-is implemented yet.
+The only implemented bonus is skeleton shimmer and micro-animations (option 4).
+It was added after required resilience checks passed. No other bonus is included.
+Keep the actual receipt deadline and effort budget in mind when submitting.
 
 ## Pokédex checkpoint evidence
 
@@ -152,5 +152,22 @@ is implemented yet.
   rollback; restarting it allowed the same form to save successfully.
 - Desktop and 390px mobile layouts reviewed. Member loading reserves space
   based on known slots; the page does not overflow horizontally.
-- QA teams removed and mock restarted. Full public-API offline/throttle review,
-  clean-install validation and final convention audit remain for stage 6.
+- QA teams removed and mock restarted. Final stage 6 evidence is recorded below.
+
+## Final review evidence
+
+- Fresh public clone of `cc7e622`: `npm ci` and all documented checks passed.
+- Controlled delayed/outage responses verified catalog/detail/list/member/picker
+  loading, errors and recovery through the real browser UI. This used an ignored
+  QA clone/proxy, rather than changing OS connectivity or the production API URL.
+- Browser review found and fixed focus loss during picker Retry; the regression
+  checks loading visibility, focus and recovery. Radar tests explicitly flush
+  Angular render callbacks to address the intermittent CI timing failure.
+- Bonus option 4 verified: shimmer computed styles, 45ms card staggering,
+  success/error toasts, keyboard dismissal and 390px mobile layout.
+- Public store/service methods have JSDoc; all components use separate templates,
+  OnPush, standalone and signal communication. Icons and BEM/token styles follow
+  the guide. No assessment PDFs, local QA artifacts or environment files are tracked.
+- Patched the build-worker dependency; dependency audit has zero findings.
+- The current final source has 54 tests in 17 files. Publishing and remote CI
+  verification remain the final owner-operated steps.
