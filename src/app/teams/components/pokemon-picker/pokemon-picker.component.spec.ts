@@ -64,10 +64,19 @@ describe('PokemonPickerComponent', () => {
     expect(fixture.nativeElement.querySelector('[role="alert"]')?.textContent).toContain(
       'Check your connection',
     );
-    search.mockReturnValueOnce(of([]));
-    fixture.nativeElement.querySelector('.async-state button').click();
+    const recovered = new Subject<readonly PokemonModel[]>();
+    search.mockReturnValueOnce(recovered);
+    const retryButton = fixture.nativeElement.querySelector('.async-state button');
+    retryButton.focus();
+    retryButton.click();
     fixture.detectChanges();
     expect(search).toHaveBeenCalledTimes(2);
+    expect(document.activeElement).toBe(fixture.nativeElement.querySelector('input'));
+    expect(fixture.componentInstance.open()).toBe(true);
+    expect(fixture.nativeElement.textContent).toContain('Finding Pokémon');
+    recovered.next([]);
+    recovered.complete();
+    fixture.detectChanges();
     expect(fixture.nativeElement.textContent).toContain('No available Pokémon');
   });
   it('rejects seventh picks and cancels unfinished typeahead on teardown', async () => {

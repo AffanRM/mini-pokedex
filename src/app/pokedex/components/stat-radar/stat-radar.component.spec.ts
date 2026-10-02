@@ -43,6 +43,8 @@ describe('StatRadarComponent', () => {
     fixture = TestBed.createComponent(StatRadarComponent);
     fixture.componentRef.setInput('pokemon', pokemonFixture(1, 'bulbasaur'));
     fixture.detectChanges();
+    // Flush render callbacks explicitly; stability alone can precede afterNextRender in CI.
+    TestBed.tick();
     await fixture.whenStable();
   });
   afterEach(() => {
@@ -65,6 +67,7 @@ describe('StatRadarComponent', () => {
       },
     };
     fixture.componentRef.setInput('pokemon', next);
+    TestBed.tick();
     await fixture.whenStable();
     expect(chartState.instances).toHaveLength(1);
     expect(chart.data.datasets[0].data).toEqual([60, 62, 63, 80, 80, 60]);

@@ -60,7 +60,11 @@
                   ? 'Pokémon suggestions couldn’t load'
                   : 'Finding Pokémon'
             "
-            [message]="state().error ?? 'Try another name. Already selected Pokémon are excluded.'"
+            [message]="
+              status() === 'error'
+                ? (state().error ?? 'Check your connection and try again.')
+                : 'Try another name. Already selected Pokémon are excluded.'
+            "
             (retry)="retry()"
           />
         }

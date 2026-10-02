@@ -147,6 +147,9 @@ export class PokemonPickerComponent {
     }
   }
   retry(): void {
+    // The retry button disappears while loading; keep focus inside the popup.
+    this.inputElement()?.nativeElement.focus();
+    this.open.set(true);
     this.retries.next();
   }
 }
