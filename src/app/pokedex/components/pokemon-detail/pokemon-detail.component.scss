@@ -90,14 +90,12 @@
     width: 155px;
     height: 155px;
     border-radius: 50%;
-    background: var(--color-skeleton);
   }
   &__loading-types {
     width: 125px;
     height: 25px;
     margin: 0 auto;
     border-radius: var(--radius-pill);
-    background: var(--color-skeleton);
   }
   &__loading-measurements {
     display: grid;
@@ -110,7 +108,6 @@
       height: 16px;
       margin: 0 auto;
       border-radius: var(--radius-sm);
-      background: var(--color-skeleton);
     }
   }
   &__stat-skeleton {
@@ -120,7 +117,6 @@
     span {
       height: 17px;
       border-radius: var(--radius-sm);
-      background: var(--color-skeleton);
     }
   }
   &__stats,

@@ -50,12 +50,12 @@
           </div>
         </dl>
       } @else if (displayStatus() === 'loading') {
-        <div class="pokemon-detail__loading-types" aria-hidden="true"></div>
+        <div class="pokemon-detail__loading-types skeleton" aria-hidden="true"></div>
         <div class="pokemon-detail__art">
-          <div class="pokemon-detail__loading-art" aria-hidden="true"></div>
+          <div class="pokemon-detail__loading-art skeleton" aria-hidden="true"></div>
         </div>
         <div class="pokemon-detail__loading-measurements" aria-hidden="true">
-          <span></span><span></span><span></span>
+          <span class="skeleton"></span><span class="skeleton"></span><span class="skeleton"></span>
         </div>
         <span class="sr-only" role="status">Loading this Pokémon’s stats and abilities.</span>
       } @else if (displayStatus() === 'error') {
@@ -103,7 +103,7 @@
       } @else if (displayStatus() === 'loading') {
         <div class="pokemon-detail__stat-skeleton" aria-hidden="true">
           @for (column of columns; track column.key) {
-            <span></span>
+            <span class="skeleton"></span>
           }
         </div>
       }

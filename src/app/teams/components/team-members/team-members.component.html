@@ -44,7 +44,7 @@
   } @else {
     <div class="team-members__grid">
       @for (pokemon of members(); track pokemon.id; let index = $index) {
-        <article class="team-members__member">
+        <article class="team-members__member" [style.--entry-index]="index">
           <span class="team-members__slot">SLOT {{ index + 1 }}</span
           ><app-pokemon-sprite [name]="pokemon.name" [url]="pokemon.sprite" [size]="90" />
           <h3>{{ pokemon.name | titlecase }}</h3>

@@ -22,6 +22,8 @@ import {
   tap,
 } from 'rxjs';
 import { AsyncStateModel } from '../common/models/async-state.model';
+import { NotificationModel } from '../common/models/notification.model';
+import { ToastComponent } from '../common/components/toast/toast.component';
 import { StorageService } from '../common/services/storage.service';
 import { errorMessage } from '../common/utils/error-message.util';
 import { PokemonModel } from '../pokedex/models/pokemon.model';
@@ -42,7 +44,7 @@ const INITIAL_MEMBERS: AsyncStateModel<readonly PokemonModel[]> = {
 @Component({
   selector: 'app-teams-page',
   standalone: true,
-  imports: [TeamBuilderComponent, TeamListComponent, TeamMembersComponent],
+  imports: [TeamBuilderComponent, TeamListComponent, TeamMembersComponent, ToastComponent],
   templateUrl: './teams.component.html',
   styleUrl: './teams.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -61,7 +63,7 @@ export class TeamsPage {
   readonly submitting = signal(false);
   readonly createError = signal<string | null>(null);
   readonly savedVersion = signal(0);
-  readonly notice = signal<string | null>(null);
+  readonly notification = signal<NotificationModel | null>(null);
   private readonly loads = new Subject<boolean>();
   private readonly creates = new Subject<CreateTeamModel>();
   private readonly deletes = new Subject<string>();
@@ -110,15 +112,19 @@ export class TeamsPage {
       exhaustMap((input) => {
         this.submitting.set(true);
         this.createError.set(null);
-        this.notice.set(null);
+        this.notification.set(null);
         return this.store.create$(input).pipe(
           tap((team) => {
             this.selectedId.set(team.id);
             this.savedVersion.update((version) => version + 1);
-            this.notice.set(`${team.name} was created.`);
+            this.notification.set({ message: `${team.name} was created.`, kind: 'success' });
           }),
           catchError((error: unknown) => {
             this.createError.set(errorMessage(error));
+            this.notification.set({
+              message: 'Your team could not be saved. Your choices are kept in the form.',
+              kind: 'error',
+            });
             return of(null);
           }),
           finalize(() => this.submitting.set(false)),
@@ -130,10 +136,16 @@ export class TeamsPage {
     this.deletes.pipe(
       mergeMap((id) => {
         const name = this.state().data.find((team) => team.id === id)?.name ?? 'Team';
-        this.notice.set(null);
+        this.notification.set(null);
         return this.store.delete$(id).pipe(
-          tap(() => this.notice.set(`${name} was deleted.`)),
-          catchError(() => of(null)),
+          tap(() => this.notification.set({ message: `${name} was deleted.`, kind: 'success' })),
+          catchError(() => {
+            this.notification.set({
+              message: `${name} could not be deleted. The team has been restored.`,
+              kind: 'error',
+            });
+            return of(null);
+          }),
         );
       }),
     ),

@@ -4,7 +4,9 @@
     <h1>Every great adventure needs a team.</h1>
     <p>Build your lineup, explore its strengths, and make it your own.</p>
   </div>
-  <div class="teams-page__notice" role="status" aria-live="polite">{{ notice() }}</div>
+  @if (notification(); as message) {
+    <app-toast [notification]="message" (dismissed)="notification.set(null)" />
+  }
   <div class="teams-page__layout">
     <aside class="teams-page__builder">
       <app-team-builder

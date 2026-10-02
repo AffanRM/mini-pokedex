@@ -1,0 +1,13 @@
+<div class="toast" [class.toast--error]="notification().kind === 'error'">
+  <p [attr.role]="notification().kind === 'error' ? 'alert' : 'status'">
+    {{ notification().message }}
+  </p>
+  <button
+    class="icon-button"
+    type="button"
+    aria-label="Dismiss notification"
+    (click)="dismissed.emit()"
+  >
+    <img src="assets/icons/ic_close.svg" width="16" height="16" alt="" aria-hidden="true" />
+  </button>
+</div>
